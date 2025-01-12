@@ -1,0 +1,23 @@
+{
+  "name": "real-estate-website",
+  "version": "1.0.0",
+  "description": "marketplace where users can sell,rent and buy real-estate",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sonudhukia143/RealEstateWeb.git"
+  },
+  "keywords": [
+    "using",
+    "mern"
+  ],
+  "author": "Sonu Dhukia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sonudhukia143/RealEstateWeb/issues"
+  },
+  "homepage": "https://github.com/Sonudhukia143/RealEstateWeb#readme"
+}
