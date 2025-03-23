@@ -1,0 +1,38 @@
+.main{
+    display: inline-block;
+    background-color: whitesmoke;
+    overflow: hidden;
+    height: fit-content;
+    border-radius: 1vh;
+    border: 1px solid wheat;
+    transition: 1s ease;
+    box-shadow: 2px 2px 2px 1px whitesmoke;
+}
+.main:hover{
+    box-shadow: 2px 6px 5px 2px whitesmoke;
+}
+.img{
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+.img:hover{
+    transform-origin: center;
+    transform: scale(1.1);
+}
+.text{
+    margin-top: 10px;
+    display: inline-block;
+    padding: 10px;
+}
+.text p{
+    font-size: 2vh;
+}
+.text h5{
+    font-size: 3vh;
+}
+.text h4{
+    font-size: 3vh;
+    color: grey;
+}

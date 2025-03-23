@@ -1,51 +1,73 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { signUpHandleChange } from "../utils/handleChange.js";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../helperComponents/Loader.jsx";
+import { signInStart, signInError, signInSuccess } from "../redux/user/userSlice.js";
+import fetchData from "../utils/fetchData.js";
+import { useNavigate } from "react-router-dom";
+import { setFlashMessage } from "../redux/flash/flashMessage.js";
+import FlashMessage from "../helperComponents/FlashMessage.jsx";
+import googleAuth from "../utils/googleAuth.js";
 
 export default function SignUp() {
-    const [img, setImg] = useState("/assets/profile.webp");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [error, setError] = useState("");
+    const [formData, setFormData] = useState({ img: "/assets/profile.webp" });
 
-    const handleImageChange = (event) => {
-        const file = event.target.files[0]; // Get the selected file
-        if (file) {
-            // Check file size
-            const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-            if (file.size > MAX_FILE_SIZE) {
-                alert("File size exceeds 5MB. Please upload a smaller file.");
-                return;
+    const flashMessage = useSelector(state => state.flash);
+    const userState = useSelector(state => state.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        formData?.password !== formData?.confirmPassword && dispatch(signInError("Passwords do not match"));
+        dispatch(signInStart());
+
+        try {
+            const res = await fetchData("/api/signin", formData, "SIGNIN");
+            const data = await res.json();
+            if (res.status !== 200 || !res.ok) {
+                dispatch(signInError(data.message));
+                dispatch(setFlashMessage({ message: data.message, type: "error" }));
+            } else {
+                dispatch(signInSuccess(data));
+                dispatch(setFlashMessage({ message: "Welcome Back! Login successful!", type: "success" }));
+                navigate('/');
             }
-
-            // Create a preview URL for the selected image
-            const previewUrl = URL.createObjectURL(file);
-            setImg(previewUrl); // Set the preview image
+        } catch (err) {
+            dispatch(signInError("Unexpected Error Occured"));
+            dispatch(setFlashMessage({ message: "Unexpected server error occured!", type: "error" }));
         }
     };
 
-    useEffect(() => {
-        // Revoke the object URL when the component unmounts or when `img` changes
-        return () => {
-            if (img && img !== "/src/assets/profile.webp") {
-                URL.revokeObjectURL(img);
+    const handleGoogleAuth = async (e) => {
+        e.preventDefault();
+        dispatch(signInStart());
+        
+        try {
+            const formData = await googleAuth();
+            if(!formData) dispatch(signInError("Google Verification Unsuccessfully"));
+
+            const res = await fetchData("/api/signin", formData, "SIGNIN");
+            console.log(res);
+            const data = await res.json();
+            if (res.status !== 200 || !res.ok) {
+                dispatch(signInError(data.message));
+                dispatch(setFlashMessage({ message: data.message, type: "error" }));
+            } else {
+                dispatch(signInSuccess(data));
+                dispatch(setFlashMessage({ message: "Welcome Back! Login successful!", type: "success" }));
+                navigate('/');
             }
-        };
-    }, [img]);
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        // Check if password and confirm password match
-        if (password !== confirmPassword) {
-            setError("Passwords do not match.");
-            return;
+        } catch (err) {
+            dispatch(signInError("Unexpected Error Occured"));
+            dispatch(setFlashMessage({ message: "Unexpected server error occured!", type: "error" }));
         }
-
-        // Handle form submission (e.g., send data to a server)
-        alert("Form submitted successfully!");
     };
 
     return (
         <>
+            { flashMessage?.message && <FlashMessage message={flashMessage.message} type={flashMessage.type} />}
+            {userState.loading && <Loader props={"Signing In"} />}
             <div className="log-in-form-wrapper">
                 <form className="log-in-form" onSubmit={handleSubmit}>
                     <h1>Sign Up</h1>
@@ -53,23 +75,25 @@ export default function SignUp() {
                         <label htmlFor="profile-image-upload" className="profile-image-container">
                             <img
                                 id="profile-image-preview"
-                                src={img}
+                                src={formData.previewUrl ? formData.previewUrl : formData.img}
                                 alt="Profile Image Preview"
+                                loading="lazy"
                             />
                             <input
                                 type="file"
                                 id="profile-image-upload"
                                 accept="image/*"
-                                onChange={handleImageChange}
+                                name="img"
+                                onChange={(e) => signUpHandleChange(e, "img", setFormData, formData)}
                             />
                         </label>
 
                         <span className="row mb-3">
-                            <label htmlFor="name" className="col-sm-12 col-form-label">
-                                Name
+                            <label htmlFor="username" className="col-sm-12 col-form-label">
+                                Username
                             </label>
                             <span className="col-sm-12">
-                                <input type="text" className="form-control" id="name" required />
+                                <input type="text" className="form-control" id="username" required onChange={(e) => signUpHandleChange(e, "username", setFormData, formData)} />
                             </span>
                         </span>
                         <span className="row mb-3">
@@ -77,7 +101,7 @@ export default function SignUp() {
                                 Email
                             </label>
                             <span className="col-sm-12">
-                                <input type="email" className="form-control" id="email" required />
+                                <input type="email" className="form-control" id="email" required onChange={(e) => signUpHandleChange(e, "gmail", setFormData, formData)} />
                             </span>
                         </span>
                         <span className="row mb-3">
@@ -89,8 +113,7 @@ export default function SignUp() {
                                     type="password"
                                     className="form-control"
                                     id="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) => signUpHandleChange(e, "password", setFormData, formData)}
                                     required
                                 />
                             </span>
@@ -104,15 +127,15 @@ export default function SignUp() {
                                     type="password"
                                     className="form-control"
                                     id="confirmpassword"
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    onChange={(e) => signUpHandleChange(e, "confirmPassword", setFormData, formData)}
                                     required
                                 />
                             </span>
                         </span>
                     </div>
-                    {error && <div style={{ color: "red" }}>{error}</div>}
+                    {userState.error && <div style={{ color: "red" }}>{userState.error}</div>}
                     <button type="submit" className="btn btn-primary">Sign Up</button>
+                    <button type="button" className="btn btn-danger mt-4" onClick={handleGoogleAuth}>Google Sign In</button>
                 </form>
             </div>
         </>

@@ -5,10 +5,24 @@
     grid-template-columns: 1fr 1fr;
 }
 
+h1 button{
+    background-color: transparent;
+    border: 0px solid transparent;
+    font-size: small;
+    display: block;
+}
+
 .leftDiv{
     display: flex;
     align-items: center;
     padding: 1vh;
+}
+.leftDiv a{
+    text-decoration: none;
+    font-size: medium;
+}
+.leftDiv a:hover{
+    text-decoration: underline;
 }
 .rightDiv{
     background-image: url('/assets/houseimage.webp');
@@ -16,4 +30,101 @@
     background-repeat: no-repeat;
     background-position: center;
     backface-visibility: visible;
+}
+
+
+@media (max-width:300px) {
+    .mainDiv{
+        grid-template-columns: 1fr;
+    }
+    .boxes{
+        display: grid;
+        grid-template-columns: 1fr;
+        row-gap: 4vh;
+    }
+    .offers{
+        display: block;
+        margin-top: 10vh;
+    }
+}
+
+@media (max-width:700px) and (min-width:300px){
+    .mainDiv{
+        grid-template-columns: 1fr;
+    }
+    .leftDiv{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0vh;
+    }
+    .leftDiv h1{
+        width: 50%;
+    }
+    .boxes{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2vh;
+    }
+    .offers{
+        display: block;
+        margin: 1vh;
+    }
+}
+
+@media (max-width:500px) and (min-width:300px){
+    .boxes{
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2vh;
+    }
+}
+
+@media (min-width:700px){
+    .mainDiv{
+        grid-template-columns: 1fr 1fr;
+    }
+    .boxes{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 5vh;
+    }
+    .offers{
+        display: block;
+        padding: 1vh;
+        margin: 5vh;
+    }
+}
+@media (min-width:900px){
+    .mainDiv{
+        grid-template-columns: 1fr 1fr;
+    }
+    .boxes{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 5vh;
+    }
+    .offers{
+        display: block;
+        padding: 1vh;
+        margin: 5vh;
+    }
+    .properties{
+        padding-left: 10vh;
+        padding-right: 10vh;
+    }
+}
+.properties{
+    padding-left: 2vh;
+    padding-right: 2vh;
+}
+
+.offers a{
+    text-decoration: none;
+}
+.offers a:hover{
+    text-decoration: underline;
+}
+.offers h3{
+    color: slateblue;
 }

@@ -1,0 +1,44 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "the backend for the marketplace for property",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "node api/index.js",
+    "dev": "node api/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sonudhukia143/RealEstateWeb.git"
+  },
+  "keywords": [
+    "backend",
+    "mern"
+  ],
+  "author": "Sonudhukia143",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sonudhukia143/RealEstateWeb/issues"
+  },
+  "homepage": "https://github.com/Sonudhukia143/RealEstateWeb#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cloudinary": "^2.6.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "firebase-admin": "^13.2.0",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.12.1",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.9",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "react-persist": "^1.0.2"
+  }
+}
