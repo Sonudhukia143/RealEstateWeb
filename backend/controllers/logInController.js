@@ -14,8 +14,8 @@ const loginUser = async (req, res) => {
             decodedToken = await admin.auth().verifyIdToken(token);
             if (!decodedToken) return res.status(404).json({ message: "Unable to decode token." });
 
-            const userEmail = decodedToken.email;
-            user = await User.findOne({ userEmail });
+            user = await User.findOne({ gmail:decodedToken.email });
+
             if (!user) return res.status(404).json({ message: 'User not found' });
         }else if(gmail && password){
             user = await User.findOne({ gmail });
