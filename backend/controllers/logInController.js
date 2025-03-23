@@ -13,7 +13,6 @@ const loginUser = async (req, res) => {
         if (token) {
             decodedToken = await admin.auth().verifyIdToken(token);
             if (!decodedToken) return res.status(404).json({ message: "Unable to decode token." });
-            if (decodedToken.email != gmail) return res.status(401).json({ message: "Email doesnot match the token" });
 
             const userEmail = decodedToken.email;
             user = await User.findOne({ userEmail });
