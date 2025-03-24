@@ -44,6 +44,7 @@ export default function Login() {
 
         try{
             const dat1 = await googleAuth();
+            console.log(dat1);
             const formData = {
                 token: dat1.token,
             };    
