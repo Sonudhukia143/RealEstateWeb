@@ -4,6 +4,10 @@ import generateToken from '../utils/webToken.js';
 import admin from '../utils/firebase-admin.js';
 
 const loginUser = async (req, res) => {
+    const objBody = req.body;
+    const isEmpty = Object.keys(objBody).length === 0;
+    if(isEmpty) return res.status(404).json({ message: "Cannot Provide Empty Fields" });
+
     const { gmail, password, token } = JSON.parse(req.body);
     if ((!gmail || !password) && !token) return res.status(400).json({ message: 'Input feilds cannot be empty' });
 

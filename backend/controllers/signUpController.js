@@ -5,8 +5,11 @@ import { cloudinary } from '../cloudinary/cloudinaryConfig.js';
 import admin from '../utils/firebase-admin.js';
 
 export default async function signinuser(req, res) {
-    const { username, gmail, password, blobImg, token } = JSON.parse(req.body);
+    const objBody = req.body;
+    const isEmpty = Object.keys(objBody).length === 0;
+    if(isEmpty) return res.status(404).json({ message: "Cannot Provide Empty Fields" });
 
+    const { username, gmail, password, blobImg, token } = JSON.parse(req.body);
     const { error } = validateUser({ username, gmail, password });
     if (error) return res.status(400).json({ message: error.details[0].message });
 
