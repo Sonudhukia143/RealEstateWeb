@@ -47,6 +47,7 @@ export default function Login() {
             const formData = {
                 token: dat1.token,
             };    
+            console.log(formData);
             const res = await fetchData("/api/login",formData,"LOGIN");
             console.log(res);
             const data = await res.json();

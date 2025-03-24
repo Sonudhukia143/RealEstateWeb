@@ -6,6 +6,7 @@ import { setFlashMessage } from '../redux/flash/flashMessage.js';
 import Loader from '../helperComponents/Loader';
 
 export default function NavBar() {
+
   const userState = useSelector(state => state.user);
   const dispatch = useDispatch();
   const signOut = async () => {
@@ -58,12 +59,13 @@ export default function NavBar() {
                     <>
                       <Nav.Link as={Link} onClick={signOut}>Logout</Nav.Link>
                       <Nav.Link as={Link} to="/profile"><img className="profilePic"
-                        src={userState?.currentUser?.user?.profile
+                        src={
+                          userState?.currentUser?.user?.profile
                           ?
                           userState?.currentUser?.user?.profile
                           :
                           'assets/profile.webp'}
-                        alt="profileImg">
+                        alt="ProfileImg" >
                       </img>
                       </Nav.Link>
                     </>
