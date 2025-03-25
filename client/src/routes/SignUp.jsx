@@ -23,7 +23,7 @@ export default function SignUp() {
         dispatch(signInStart());
 
         try {
-            const res = await fetchData("/api/signin", formData, "SIGNIN");
+            const res = await fetchData("https://bank-website-23d3.vercel.app/api/signin", formData, "SIGNIN");
             const data = await res.json();
             if (res.status !== 200 || !res.ok) {
                 dispatch(signInError(data.message));
@@ -47,7 +47,7 @@ export default function SignUp() {
             const formData = await googleAuth();
             if(!formData) dispatch(signInError("Google Verification Unsuccessfully"));
 
-            const res = await fetchData("/api/signin", formData, "SIGNIN");
+            const res = await fetchData("https://bank-website-23d3.vercel.app/api/signin", formData, "SIGNIN");
             console.log(res);
             const data = await res.json();
             if (res.status !== 200 || !res.ok) {

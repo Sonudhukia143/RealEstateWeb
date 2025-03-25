@@ -22,7 +22,7 @@ export default function Login() {
         e.preventDefault();
         dispatch(signInStart());
         try{
-            const res = await fetchData("/api/login",formData,"LOGIN");
+            const res = await fetchData("https://bank-website-23d3.vercel.app/api/login",formData,"LOGIN");
             const data = await res.json();
             if (res.status !== 200 || !res.ok) {
                 dispatch(signInError(data.message));
