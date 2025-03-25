@@ -49,7 +49,7 @@ export default function Login() {
                 token: dat1.token,
             };    
             console.log(formData);
-            const res = await fetchData("https://bank-website-23d3.vercel.app/api/login",formData,"LOGIN");
+            const res = await fetchData("/api/login",formData,"LOGIN");
             console.log(res);
             const data = await res.json();
             console.log(data);
@@ -64,6 +64,7 @@ export default function Login() {
         }catch(err){
             dispatch(signInError("Unexpected Error Occured"));
             dispatch(setFlashMessage({ message: "Unexpected error occurred. Please try again.", type: "danger" }));
+            console.log(err);
         }
     }
 
