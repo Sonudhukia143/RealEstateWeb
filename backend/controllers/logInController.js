@@ -15,12 +15,15 @@ const loginUser = async (req, res) => {
         let decodedToken;
         let user;
         if (token) {
-            decodedToken = await admin.auth().verifyIdToken(token);
-            if (!decodedToken) return res.status(404).json({ message: "Unable to decode token." });
+            try{
+                decodedToken = await admin.auth().verifyIdToken(token);
+                if (!decodedToken) return res.status(404).json({ message: "Unable to decode token." });
 
-            user = await User.findOne({ gmail:decodedToken.email });
+                user = await User.findOne({ gmail:decodedToken.email });
+            }catch(error){
+                if(error) return res.status(404).json({message:error});
+            }
 
-            console.log(user);
             if (!user) return res.status(404).json({ message: 'User not found' });
         }else if(gmail && password){
             user = await User.findOne({ gmail });
