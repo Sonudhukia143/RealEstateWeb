@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 const corsOptions = {
-    origin: ['http://localhost:5173','https://maisenmonde.netlify.app'],   
+    origin: ['http://localhost:5173','https://maisenmonde.netlify.app','https://accounts.google.com'],   
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
     optionsSuccessStatus: 200,
