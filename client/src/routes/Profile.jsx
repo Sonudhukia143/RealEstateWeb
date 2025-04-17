@@ -1,84 +1,147 @@
-import React from 'react';
-import { Container, Row, Col, Card, Button, Image } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Container, Row, Col, Card, Button, Image, Form } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { signInSuccess } from '../redux/user/userSlice.js';
+import { FaPlus, FaTimes, FaCheck, FaSpinner } from 'react-icons/fa';
+import ProfileInfo from '../helperComponents/profileComponents/ProfileInfo.jsx';
+import NoLoggedIn from '../helperComponents/profileComponents/NoLoggedIn.jsx';
+import EmailVerification from '../helperComponents/profileComponents/EmailVerification.jsx';
+import UserInfo from '../helperComponents/profileComponents/UserInfo.jsx';
 
 export default function Profile() {
   const state = useSelector(state => state.user?.currentUser?.user);
+  const token = useSelector(state => state.user?.currentUser?.token);
+  const [verifyButton, setVerifyText] = useState("Verify Email");
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
-  const user = {
-    phone: '+123 456 7890',
-    location: 'New York, USA',
+  const [showInfoForm, setShowInfoForm] = useState(false);
+
+  const [infoFields, setInfoFields] = useState([{ type: '', content: '' }]);
+  const [userInfo, setUserInfo] = useState(null);
+
+  const handleAddField = () => {
+    setInfoFields([...infoFields, { type: '', content: '' }]);
   };
+
+  const handleFieldChange = (index, field, value) => {
+    const updatedFields = [...infoFields];
+    updatedFields[index][field] = value;
+    setInfoFields(updatedFields);
+  };
+
+  const handleRemoveField = (index) => {
+    if (infoFields.length === 1) return;
+    const updatedFields = [...infoFields];
+    updatedFields.splice(index, 1);
+    setInfoFields(updatedFields);
+  };
+
+  const handleSaveInfo = async () => {
+    try {
+      const validFields = infoFields.filter(field => field.type.trim() && field.content.trim());
+      if(!validFields || validFields.length < 0) return;
+      
+      const newInfo = [...userInfo, ...validFields];
+      setShowInfoForm(false);
+      setInfoFields([{ type: '', content: '' }]);
+
+      setLoading(true);
+
+      const res = await fetch('http://localhost:3000/api/add-info', {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify({ additionalInfo: newInfo,token: token }),
+      });
+      const data = await res.json();
+      console.log(data);
+      console.log(res.status);
+      if(res.status == 200){
+        setUserInfo(newInfo);
+        setShowInfoForm(false);
+        setInfoFields([{ type: '', content: '' }]);
+        setLoading(false);
+      }else{
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error('Error saving info:', error);
+    }
+  };
+
+  const handleCancel = () => {
+    setShowInfoForm(false);
+    setInfoFields([{ type: '', content: '' }]);
+  };
+
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      setLoading(true);
+
+      try {
+        const res = await fetch(`http://localhost:3000/api/fetch-info/${token}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+        const data = await res.json();
+        console.log(data);
+        if (res.status === 200) {
+          setUserInfo(data.details || []);
+        } else {
+          console.error('Error fetching user details:', data.message);
+        }
+      } catch (error) {
+        setLoading(false);
+        console.error('Error fetching user details:', error);
+      }finally {
+        setLoading(false);
+      }
+    }
+
+    fetchDetails();
+  },[setUserInfo]);
 
   return (
     <>
-    {
-        state
-        ?
+      {state ? (
         <Container className="mt-5">
-        <Row>
-          <Col md={4} className="text-center">
-            <Card className="shadow-sm">
-              <Card.Body>
-                <Image
-                  src={state?.profile?state?.profile:'assets/profile.webp'}
-                  roundedCircle
-                  alt="Profile Picture"
-                  className="mb-3"
-                  style={{ width: '150px', height: '150px' }}
-                />
-                <Card.Title>{state?.username}</Card.Title>
-                <Card.Text>{state?.gmail}</Card.Text>
-                <Button variant="primary">Edit Profile</Button>
-              </Card.Body>
-            </Card>
-          </Col>
-  
-          <Col md={8}>
-            <Card className="shadow-sm">
-              <Card.Body>
-                <Card.Title>Contact Information</Card.Title>
-                <Row>
-                  <Col md={6}>
-                    <h6>Email</h6>
-                    <p>{user.email}</p>
-                  </Col>
-                  <Col md={6}>
-                    <h6>Phone</h6>
-                    <p>{user.phone}</p>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={6}>
-                    <h6>Location</h6>
-                    <p>{user.location}</p>
-                  </Col>
-                </Row>
-                <Button variant="outline-primary">Update Info</Button>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-      :
-      <Container className="mt-5 text-center">
-      <Card className="shadow-sm">
-        <Card.Body>
-          <Image
-            src="assets/profile.webp"
-            roundedCircle
-            alt="Profile Placeholder"
-            className="mb-3"
-            style={{ width: '150px', height: '150px' }}
-          />
-          <Card.Title>No user data available</Card.Title>
-          <Card.Text>Please log in to see your profile.</Card.Text>
-          <NavLink to="/login"><Button variant="primary">Login</Button></NavLink>
-        </Card.Body>
-      </Card>
-    </Container>
-    }
+          <Row>
+
+            <ProfileInfo state={state} />
+
+            <Col md={8}>
+              <Card className="shadow-sm">
+                <Card.Body>
+                  <Card.Title>User Information</Card.Title>
+                  <EmailVerification props={{state,setVerifyText, setLoading, dispatch, signInSuccess, token, verifyButton, loading}} />
+                  <UserInfo userInfo={userInfo} />
+
+                  {/* Info form or update button */}
+                  {showInfoForm ? (
+                    <div className="mt-4">
+                      <div className="d-flex justify-content-end">
+                        <Button variant="outline-secondary" onClick={handleCancel} className="me-2">
+                          Cancel
+                        </Button>
+                        <Button className={loading?`disabled primary`:``} variant={loading?'primary':'outline-primary'} onClick={handleSaveInfo}>
+                          { loading? <><FaSpinner /> Saving</> : <><FaCheck /> Save</> }
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <Button className="mt-4" variant="outline-primary" onClick={() => setShowInfoForm(true)}>
+                      Update Info
+                    </Button>
+                  )}
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      ) : (
+        <NoLoggedIn />
+      )}
     </>
   );
 }

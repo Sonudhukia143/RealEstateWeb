@@ -11,18 +11,24 @@ export default function NavBar() {
   const dispatch = useDispatch();
   const signOut = async () => {
     dispatch(signInStart());
-
-    const res = await fetch("/api/logout", {
-      method: 'POST',
-      credentials: "include",
-    });
-    const data = await res.json();
-    if (res.ok || res.status == 200) {
-      dispatch(logout());
-      dispatch(setFlashMessage({ message: data.message, type: "success" }));
-    }
-    else if (!res.ok) {
-      dispatch(setFlashMessage({ message: "Unable to logout", type: "warning" }))
+    try{
+      const res = await fetch("http://localhost:3000/api/logout", {
+        method: 'POST',
+        credentials: "include",
+      });
+      console.log(res);
+      const data = await res.json();
+      console.log(data);
+      if (res.ok || res.status == 200) {
+        dispatch(logout());
+        dispatch(setFlashMessage({ message: data.message, type: "success" }));
+      }
+      else if (!res.ok) {
+        dispatch(setFlashMessage({ message: "Unable to logout", type: "warning" }))
+      }
+    }catch(err){
+      dispatch(signInError("Unexpected Error Occured"));
+      dispatch(setFlashMessage({ message: "Unexpected error occurred. Please try again.", type: "danger" }));
     }
   }
 

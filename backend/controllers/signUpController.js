@@ -57,7 +57,8 @@ export default async function signinuser(req, res) {
         const jsonUser = {
             gmail: newUser.gmail,
             username: newUser.username,
-            profile: newUser?.profile[0]?.url?newUser?.profile[0]?.url:null
+            profile: newUser?.profile[0]?.url?newUser?.profile[0]?.url:null,
+            emailVerified: newUser?.emailVerified,
         }
 
         return res.status(200).json({ message: 'Creation successful', token: Jwttoken, user: jsonUser });

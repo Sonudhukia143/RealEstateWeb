@@ -12,6 +12,12 @@ if (process.env.NODE_ENV !== "production") {
 import logInRouter from '../routes/login.js';
 import logout from '../routes/logOut.js';
 import signUpRouter from '../routes/signUp.js';
+import verifyMail from '../routes/verify.js';
+import requestVerification from '../routes/requestVerify.js';
+import changePassword from '../routes/changePassword.js';
+import updateProfile from '../routes/updateProfile.js';
+import addInfo from '../routes/addInfo.js';
+import fetchInfo from '../routes/getInfo.js';
 
 const connectDb = async () => {
     if (mongoose.connection.readyState >= 1) {
@@ -32,7 +38,7 @@ app.set('trust proxy', true);
 app.use(express.urlencoded({ extended: true }));
 app.use(mongoSanitize());
 app.use(cookieParser());
-app.use(express.json());
+//app.use(express.json());
 
 const corsOptions = {
     origin: ['http://localhost:5173','https://maisenmonde.netlify.app','https://accounts.google.com'],   
@@ -46,6 +52,12 @@ app.use(cors(corsOptions));
 app.use('/api/login', logInRouter);
 app.use('/api/logout', logout);
 app.use('/api/signin' ,signUpRouter);
+app.use('/api/verify-email', verifyMail);
+app.use('/api/request-verification', requestVerification);
+app.use('/api/change-pass',changePassword);
+app.use('/api/update-profile',updateProfile);
+app.use('/api/add-info',addInfo);
+app.use('/api/fetch-info',fetchInfo);
 app.get('/api/test', (req,res) => {
     res.send("Hello, The Backend Is Working");
 });

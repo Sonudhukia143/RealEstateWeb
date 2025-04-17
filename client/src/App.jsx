@@ -16,6 +16,8 @@ const SignUp = lazy(() => import('./routes/SignUp.jsx'));
 const About = lazy(() => import('./routes/About.jsx'));
 const Profile = lazy(() => import('./routes/Profile.jsx'));
 const ProtectedRoute = lazy(() => import('./routes/ProtectedRoute.jsx'));
+const UpdateProfile = lazy(() => import('./routes/UpdateProfile.jsx'));
+const ChangePassword = lazy(() => import('./routes/ChangePassword.jsx'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -50,6 +52,16 @@ const router = createBrowserRouter(
             <Suspense fallback={<Loader />}>
               <Profile />
             </Suspense>
+          } />
+          <Route path="/update-profile" element={
+            <Suspense fallback={<Loader />}>
+              <UpdateProfile /> 
+              </Suspense>
+          } />
+          <Route path="/change-password" element={
+            <Suspense fallback={<Loader />}>
+              <ChangePassword /> 
+              </Suspense>
           } />
         </Route>
         <Route path="*" element={<UndefinedPath />} />

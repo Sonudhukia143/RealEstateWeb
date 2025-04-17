@@ -1,13 +1,8 @@
 import Box from "../helperComponents/Box.jsx";
-import { useSelector } from "react-redux";
-import FlashMessage from "../helperComponents/FlashMessage.jsx";
 
 export default function Home() {
-    const flashMessage = useSelector(state => state.flash);
-
     return (
         <>
-            {flashMessage?.message && <FlashMessage message={flashMessage.message} type={flashMessage.type} />}
             <div className="mainDiv">
                 <div className="leftDiv">
                     <h1 style={{ color: "grey" }}>FIND YOUR HOMES ALL <b style={{ color: "lightgrey" }}>AROUND</b> THE GLOBE

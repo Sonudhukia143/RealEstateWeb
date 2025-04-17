@@ -22,7 +22,15 @@ const userSchema = new mongoose.Schema({
     },
     password: { 
         type: String,
-    }
+    },
+    emailVerified: {
+        type: Boolean,
+        default: false
+    },
+    info:{
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Info'
+    },  
 });
 
 const User = mongoose.model("User", userSchema);

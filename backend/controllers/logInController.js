@@ -4,7 +4,7 @@ import generateToken from '../utils/webToken.js';
 import admin from '../utils/firebase-admin.js';
 
 const loginUser = async (req, res) => {
-    const objBody = req.body;
+    const objBody = req?.body;
     const isEmpty = Object.keys(objBody).length === 0;
     if(isEmpty) return res.status(404).json({ message: "Cannot Provide Empty Fields" });
 
@@ -45,7 +45,8 @@ const loginUser = async (req, res) => {
         const newUser = {
             username: user.username,
             gmail: user.gmail,
-            profile: user?.profile[0]?.url ? user.profile[0].url : null
+            profile: user?.profile[0]?.url ? user.profile[0].url : null,
+            emailVerified: user?.emailVerified,
         }
 
         return res.status(200).json({ message: 'Login successful', token: jwtToken, user: newUser });

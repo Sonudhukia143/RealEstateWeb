@@ -6,13 +6,11 @@ import { signInStart, signInError, signInSuccess } from "../redux/user/userSlice
 import fetchData from "../utils/fetchData.js";
 import { useNavigate } from "react-router-dom";
 import { setFlashMessage } from "../redux/flash/flashMessage.js";
-import FlashMessage from "../helperComponents/FlashMessage.jsx";
 import googleAuth from "../utils/googleAuth.js";
 
 export default function SignUp() {
     const [formData, setFormData] = useState({ img: "/assets/profile.webp" });
 
-    const flashMessage = useSelector(state => state.flash);
     const userState = useSelector(state => state.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -23,7 +21,7 @@ export default function SignUp() {
         dispatch(signInStart());
 
         try {
-            const res = await fetchData("/api/signin", formData, "SIGNIN");
+            const res = await fetchData("http://localhost:3000/api/signin", formData, "SIGNIN");
             const data = await res.json();
             if (res.status !== 200 || !res.ok) {
                 dispatch(signInError(data.message));
@@ -47,8 +45,8 @@ export default function SignUp() {
             const formData = await googleAuth();
             if(!formData) dispatch(signInError("Google Verification Unsuccessfully"));
 
-            const res = await fetchData("/api/signin", formData, "SIGNIN");
-            console.log(res);
+            const res = await fetchData("http://localhost:3000/api/signin", formData, "SIGNIN");
+
             const data = await res.json();
             if (res.status !== 200 || !res.ok) {
                 dispatch(signInError(data.message));
@@ -66,7 +64,6 @@ export default function SignUp() {
 
     return (
         <>
-            { flashMessage?.message && <FlashMessage message={flashMessage.message} type={flashMessage.type} />}
             {userState.loading && <Loader props={"Signing In"} />}
             <div className="log-in-form-wrapper">
                 <form className="log-in-form" onSubmit={handleSubmit}>
