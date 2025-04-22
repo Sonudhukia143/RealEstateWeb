@@ -37,8 +37,6 @@ export default function UpdateProfile () {
         }
     };
 
-    console.log("Form Data: ", formData);  
-
     return (
         <>
             {userState.loading && <Loader props={"Updating Proile"} />}

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from "react";
 import { loginHandleChange } from "../utils/handleChange.js";
 import {useDispatch, useSelector} from "react-redux";
 import { signInStart,signInError,signInSuccess } from "../redux/user/userSlice.js";
@@ -58,7 +58,7 @@ export default function Login() {
                 dispatch(setFlashMessage({ message: data.message, type: "error" }));
             } else {
                 dispatch(signInSuccess(data));
-                dispatch(setFlashMessage({ message: "Welcome Back! Login successful!", type: "success" }));
+                dispatch(setFlashMessage({ message: data.message, type: "success" }));
                 navigate('/');
             }    
         }catch(err){

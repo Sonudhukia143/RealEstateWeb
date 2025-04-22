@@ -6,26 +6,17 @@ const detailSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  details: [
-    {
-      fieldName: {  
-        type: String,
-        required: true,
-        trim: true
-      },
-      value: {
-        type: mongoose.Schema.Types.Mixed,  
-        required: true
-      },
-      valueType: {
-        type: String,
-        enum: ["string", "number", "boolean", "date"],
-        required: true
-      }
-    }
-  ]
-}, { timestamps: true });
+  pincode: String,
+  city: String,
+  state: String,
+  country: String,
+  UserType:String,
+  UserType: {
+    type: String,
+    enum: ["Renter", "Buyer", "Property Owner", "Agent"],
+  }
+});
 
-const Detail = mongoose.model("Detail", detailSchema);  
+const Detail = mongoose.model("Detail", detailSchema);
 
 export { Detail };

@@ -1,28 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, Button, Image, Form } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { signInSuccess } from '../redux/user/userSlice.js';
-import { FaPlus, FaTimes, FaCheck, FaSpinner } from 'react-icons/fa';
-import ProfileInfo from '../helperComponents/profileComponents/ProfileInfo.jsx';
+import { signInSuccess, setInfoUser, setUserLoc } from '../redux/user/userSlice.js';
+import { FaCircle } from 'react-icons/fa';
 import NoLoggedIn from '../helperComponents/profileComponents/NoLoggedIn.jsx';
-import EmailVerification from '../helperComponents/profileComponents/EmailVerification.jsx';
 import UserInfo from '../helperComponents/profileComponents/UserInfo.jsx';
+import UserInfoForm from '../helperComponents/profileComponents/UserInfoForm.jsx';
+import fetchDetails from '../utils/intialUserInfoFetch.js';
+import ProfileInfo from '../helperComponents/profileComponents/ProfileInfo.jsx';
+import EmailVerification from '../helperComponents/profileComponents/EmailVerification.jsx';
+import { setFlashMessage } from '../redux/flash/flashMessage.js';
+import '../../styles/profile.css';
 
 export default function Profile() {
-  const state = useSelector(state => state.user?.currentUser?.user);
-  const token = useSelector(state => state.user?.currentUser?.token);
-  const [verifyButton, setVerifyText] = useState("Verify Email");
-  const [loading, setLoading] = useState(false);
+  const userState = useSelector(state => state.user?.currentUser);
+  const state = userState?.user;
+  const token = userState?.token;
+  const Info = userState?.details;
+  const loc = userState?.location;
+  
   const dispatch = useDispatch();
 
+  const [verifyButton, setVerifyText] = useState("Verify Email");
+  const [loading, setLoading] = useState(false);
   const [showInfoForm, setShowInfoForm] = useState(false);
-
-  const [infoFields, setInfoFields] = useState([{ type: '', content: '' }]);
-  const [userInfo, setUserInfo] = useState(null);
-
-  const handleAddField = () => {
-    setInfoFields([...infoFields, { type: '', content: '' }]);
-  };
+  const [userInfo, setUserInfo] = useState(!Array.isArray(Info) ? Info : "");
+  const [infoFields, setInfoFields] = useState([
+    { type: 'city', content: !Array.isArray(Info) ? Info?.city : "" },
+    { type: 'pincode', content: !Array.isArray(Info) ? Info?.pincode : "" },
+    { type: 'state', content: !Array.isArray(Info) ? Info?.state : "" },
+    { type: 'country', content: !Array.isArray(Info) ? Info?.country : "" },
+    { type: 'UserType', content: !Array.isArray(Info) ? Info?.UserType : "Renter" },
+  ]);
 
   const handleFieldChange = (index, field, value) => {
     const updatedFields = [...infoFields];
@@ -30,118 +39,101 @@ export default function Profile() {
     setInfoFields(updatedFields);
   };
 
-  const handleRemoveField = (index) => {
-    if (infoFields.length === 1) return;
-    const updatedFields = [...infoFields];
-    updatedFields.splice(index, 1);
-    setInfoFields(updatedFields);
-  };
-
-  const handleSaveInfo = async () => {
-    try {
-      const validFields = infoFields.filter(field => field.type.trim() && field.content.trim());
-      if(!validFields || validFields.length < 0) return;
-      
-      const newInfo = [...userInfo, ...validFields];
-      setShowInfoForm(false);
-      setInfoFields([{ type: '', content: '' }]);
-
-      setLoading(true);
-
-      const res = await fetch('http://localhost:3000/api/add-info', {
-        method: 'POST',
-        credentials: 'include',
-        body: JSON.stringify({ additionalInfo: newInfo,token: token }),
-      });
-      const data = await res.json();
-      console.log(data);
-      console.log(res.status);
-      if(res.status == 200){
-        setUserInfo(newInfo);
-        setShowInfoForm(false);
-        setInfoFields([{ type: '', content: '' }]);
-        setLoading(false);
-      }else{
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error('Error saving info:', error);
-    }
-  };
-
-  const handleCancel = () => {
-    setShowInfoForm(false);
-    setInfoFields([{ type: '', content: '' }]);
-  };
-
-
-  useEffect(() => {
-    const fetchDetails = async () => {
-      setLoading(true);
-
-      try {
-        const res = await fetch(`http://localhost:3000/api/fetch-info/${token}`, {
-          method: 'GET',
-          credentials: 'include',
+    useEffect(() => {
+      if(loc != null) {
+      if (window.mappls) {
+        const map = new window.mappls.Map("map", {
+          center: [loc.lat,loc.lon], // [latitude, longitude]
+          zoomControl: true,
+          location: true
         });
-        const data = await res.json();
-        console.log(data);
-        if (res.status === 200) {
-          setUserInfo(data.details || []);
-        } else {
-          console.error('Error fetching user details:', data.message);
-        }
-      } catch (error) {
-        setLoading(false);
-        console.error('Error fetching user details:', error);
-      }finally {
-        setLoading(false);
+
+        map.on("load", function () {
+          new window.mappls.Marker({
+            map: map,
+            position: { lat: loc.lat, lng: loc.lon },
+            popup_html: "📍 Custom Marker",
+            draggable: false,
+          });
+        });
       }
-    }
+      }
+    }, [loc]);
 
-    fetchDetails();
-  },[setUserInfo]);
 
-  return (
-    <>
-      {state ? (
-        <Container className="mt-5">
-          <Row>
+    useEffect(() => {
+      if(Info || loc == null){
+        const fetchLoc = async () => {
+          const response = await fetch(`https://api.geoapify.com/v1/geocode/search?postcode=${Info?.pincode}&city=${Info?.city}&state=${Info?.state}&country=${Info?.country}&format=json&apiKey=${import.meta.env.VITE_GEOLOCATION_API_KEY}`);
+          const data = await response.json();
+          dispatch(setUserLoc({lat:data.results[0].lat,lon:data.results[0].lon}));
+        }
+        fetchLoc();
+      }
 
-            <ProfileInfo state={state} />
+      if (!Info) {
+        const mountFetching = async () => {
+          const res = await fetchDetails(setLoading, token);
+          const data = await res.json();
+          if (res.ok || res.status == 200) {
+            setUserInfo(data.details || []);
+            setInfoFields([
+              { type: 'city', content: data.details?.city },
+              { type: 'pincode', content: data.details?.pincode },
+              { type: 'state', content: data.details?.state },
+              { type: 'country', content: data.details?.country },
+              { type: 'UserType', content: data.details?.UserType },
+            ]);
+            dispatch(setInfoUser(data.details));
+            dispatch(setFlashMessage({ message: data.message, type: "success" }));
+          } else {
+            dispatch(setFlashMessage({ message: data.message, type: "error" }));
+            dispatch(setInfoUser([]));
+          }
+        }
+        mountFetching();
+      }
+    }, [Info]);
 
-            <Col md={8}>
-              <Card className="shadow-sm">
-                <Card.Body>
-                  <Card.Title>User Information</Card.Title>
-                  <EmailVerification props={{state,setVerifyText, setLoading, dispatch, signInSuccess, token, verifyButton, loading}} />
-                  <UserInfo userInfo={userInfo} />
-
-                  {/* Info form or update button */}
-                  {showInfoForm ? (
-                    <div className="mt-4">
-                      <div className="d-flex justify-content-end">
-                        <Button variant="outline-secondary" onClick={handleCancel} className="me-2">
-                          Cancel
-                        </Button>
-                        <Button className={loading?`disabled primary`:``} variant={loading?'primary':'outline-primary'} onClick={handleSaveInfo}>
-                          { loading? <><FaSpinner /> Saving</> : <><FaCheck /> Save</> }
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <Button className="mt-4" variant="outline-primary" onClick={() => setShowInfoForm(true)}>
-                      Update Info
-                    </Button>
-                  )}
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      ) : (
-        <NoLoggedIn />
-      )}
-    </>
-  );
-}
+    return (
+      <>
+        {state ? (
+          <Container className="mt-5">
+            <Row>
+              <ProfileInfo state={state} />
+              <Col md={8}>
+                <Card className="shadow-sm">
+                  <Card.Body>
+                    <Card.Title>User Information</Card.Title>
+                    <EmailVerification props={{ state, setVerifyText, setLoading, dispatch, signInSuccess, token, verifyButton, loading }} />
+                    {
+                      !showInfoForm && loading ?
+                        <div className='m-4'>
+                          <FaCircle className={`spinner-border text-primary ${loading ? 'd-inline' : 'd-none'}`} />
+                          <b> Fetching Info</b>
+                        </div>
+                        : !showInfoForm && <UserInfo userInfo={userInfo} />
+                    }
+                    {showInfoForm ? (
+                      <UserInfoForm props={{ infoFields, handleFieldChange, setShowInfoForm, loading, setLoading, token, setUserInfo, setInfoFields }} />
+                    ) : (
+                      !loading &&
+                      <Button className="mt-4" variant="outline-primary" onClick={() => setShowInfoForm(true)}>
+                        Update Info
+                      </Button>
+                    )}
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <div>
+              <h2>Mappls Map</h2>
+              <div id="map" style={{ height: "500px", width: "100%" }}></div>
+            </div>
+          </Container>
+        ) : (
+          <NoLoggedIn />
+        )}
+      </>
+    );
+  }
