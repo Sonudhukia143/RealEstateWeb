@@ -3,6 +3,6 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.get('/:id', fetchInfo);
+router.get('/', fetchInfo);
 
 export default router;

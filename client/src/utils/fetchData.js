@@ -40,8 +40,11 @@ export default async function fetchData(url, formData,type,token) {
 
         const res = await fetch(url, {
             method: "POST",
-            body: JSON.stringify({blobImg:base64String,...formData,token:token}),
-            credentials:"include"
+            body: JSON.stringify({blobImg:base64String,...formData}),
+            credentials:"include",
+            headers:{
+                'Authorization': `${token}`,
+            },
         });
 
         return res;
@@ -56,7 +59,10 @@ export default async function fetchData(url, formData,type,token) {
     }else if(type == "CHANGEPASS"){
         const res = await fetch(url, {
             method: "POST",
-            body: JSON.stringify({...formData,token:token}),
+            body: JSON.stringify({...formData}),
+            headers:{
+                'Authorization': `${token}`,
+            },
             credentials:"include"
         });
         

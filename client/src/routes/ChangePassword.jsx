@@ -38,7 +38,7 @@ export default function ChangePassword() {
 
     return (
         <>
-            {userState.loading && <Loader props={"Logging In"} />}
+            {userState.loading && <Loader props={"Updating Password"} />}
             <div className="log-in-form-wrapper">
                 <form className="log-in-form" onSubmit={handleSubmit}>
                     <h1>CHANGE PASSWORD</h1>

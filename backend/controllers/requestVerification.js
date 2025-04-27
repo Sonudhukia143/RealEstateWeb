@@ -1,19 +1,11 @@
-import { User } from "../models/User.js";
 import {sendVerificationEmail} from "../utils/nodeMailer.cjs";
-import jwt from "jsonwebtoken";
 
 export default async function requestVerification (req,res) {
-    const { token } = req.body;
-    if (!token) return res.status(400).json({ message: 'Token is required' });
+    const user = req.user;
+    if(!reqUser) return res.status(404).json({message:"No user info provided."});
 
     try {
-        const decodedToken = jwt.verify(token, process.env.JSON_WEB_SECRET);
-        if(decodedToken.exp && decodedToken.exp < Date.now() / 1000) return res.status(401).json({ message: 'Token has expired' });
-        if (!decodedToken) return res.status(401).json({ message: 'Invalid token' });
-
-        const userId = decodedToken.id;
-        const user = await User.findById(userId);
-        if (!user) return res.status(404).json({ message: 'User not found' });
+        const user = reqUser.id;
 
         if (user.emailVerified) {
             const jsonUser = {

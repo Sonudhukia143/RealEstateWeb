@@ -1,25 +1,18 @@
-import { User } from "../models/User.js";
 import { Detail } from "../models/UserDetails.js";
-import jwt from "jsonwebtoken";
 
 export default async function addInfo(req, res) {
     const data = req.body;
     if (!data) return res.status(400).json({ message: "No data provided" });
-    if (!data.token) return res.status(400).json({ message: "No token provided" });
 
     try {
-        const decodedToken = jwt.verify(data.token, process.env.JSON_WEB_SECRET);
-        if (!decodedToken) return res.status(401).json({ message: "Invalid token" });
-        if (decodedToken.exp && decodedToken.exp < Date.now() / 1000) return res.status(401).json({ message: "Token has expired" });
-
-        const userId = decodedToken.id;
-        if (!userId) return res.status(401).json({ message: "No userID found in token." });
-
-        const user = await User.findById(userId);
+        const user = req.user;
         if (!user) return res.status(404).json({ message: "User not found" });
 
         const { pincode, city, state, country,UserType } = data.additionalInfo;
         if (!pincode || !city || !state || !country || !UserType) return res.status(400).json({ message: "Please provide all the details" });
+
+        const userId = user._id;
+        if(!userId) return res.status(404).json({message:"No userId found."});
 
         let userDetails = await Detail.findOne({ userId });
         if (userDetails) {

@@ -18,6 +18,7 @@ import changePassword from '../routes/changePassword.js';
 import updateProfile from '../routes/updateProfile.js';
 import addInfo from '../routes/addInfo.js';
 import fetchInfo from '../routes/getInfo.js';
+import authMiddleware from '../middlewares/checkAuth.js';
 
 const connectDb = async () => {
     if (mongoose.connection.readyState >= 1) {
@@ -41,7 +42,7 @@ app.use(cookieParser());
 //app.use(express.json());
 
 const corsOptions = {
-    origin: ['http://localhost:5173','https://maisenmonde.netlify.app','https://accounts.google.com'],   
+    origin: ['http://localhost:5173','http://localhost:5174','https://maisenmonde.netlify.app','https://accounts.google.com'],   
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
     optionsSuccessStatus: 200,
@@ -52,12 +53,14 @@ app.use(cors(corsOptions));
 app.use('/api/login', logInRouter);
 app.use('/api/logout', logout);
 app.use('/api/signin' ,signUpRouter);
+
+app.use('/api/fetch-info', authMiddleware ,fetchInfo);
+app.use('/api/request-verification', authMiddleware ,requestVerification);
 app.use('/api/verify-email', verifyMail);
-app.use('/api/request-verification', requestVerification);
-app.use('/api/change-pass',changePassword);
-app.use('/api/update-profile',updateProfile);
-app.use('/api/add-info',addInfo);
-app.use('/api/fetch-info',fetchInfo);
+
+app.use('/api/change-pass',authMiddleware,changePassword);
+app.use('/api/update-profile',authMiddleware,updateProfile);
+app.use('/api/add-info',authMiddleware,addInfo);
 app.get('/api/test', (req,res) => {
     res.send("Hello, The Backend Is Working");
 });

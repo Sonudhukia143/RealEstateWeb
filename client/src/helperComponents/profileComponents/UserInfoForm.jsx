@@ -18,17 +18,16 @@ export default function UserInfoForm({ props }) {
                 return acc;
             }, {});
 
-            console.log(validFields);
-
             setLoading(true);
 
             const res = await fetch('http://localhost:3000/api/add-info', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `${token}`,
                 },
                 credentials: 'include',
-                body: JSON.stringify({ additionalInfo: validFields, token }),
+                body: JSON.stringify({ additionalInfo: validFields }),
             });
 
             const data = await res.json();

@@ -12,8 +12,9 @@ export default async function verifyEmail (state,setVerifyText,setLoading,dispat
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `${token}`  
         },
-        body: JSON.stringify({ token: token }),
+        credentials:'include'
       });
 
       const data = await res.json();
