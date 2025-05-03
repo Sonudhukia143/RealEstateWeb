@@ -9,13 +9,9 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendVerificationEmail (email, token) {
-    console.log('Inside sendVerificationEmail function');
-    console.log('Email:', email);
-    console.log('Token:', token);
     if (!email || !token) console.error('Email and token are required');
     const verificationLink = `http://localhost:3000/api/verify-email?token=${token}`;
-    console.log('Verification Link:', verificationLink);
-    console.log('Sending email to:', email);
+
     const mailOptions = {
         from: "TEAM MAISEN MONDE",
         to: email,
@@ -35,6 +31,32 @@ async function sendVerificationEmail (email, token) {
     } catch (error) {
         console.error('Error sending verification email:', error);
     }
-}
+};
 
-module.exports = { sendVerificationEmail};
+async function sendVerificationOtp (email,otp) {
+    if (!email) console.error('Email is required');
+
+    const mailOptions = {
+        from: "TEAM MAISEN MONDE",
+        to: email,
+        subject: 'Email Verification OTP From MaisenMonde',
+        html:`
+        <div style="font-family: Arial, sans-serif; padding: 10px;">
+            <h1 style="color: #333;">Verify It's You for MaisenMonde</h1>
+            <p>Please verify yourself by entering the OTP below:</p>
+            <p>Your OTP is <b style="color: blue; font-size: 40px;">${otp}</b>. It will expire in <b>5 minutes</b>.</p>
+            <p>Thanks,</p>
+            <p><strong>Team MaisenMonde</strong></p>
+        </div>
+    `,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Verification email sent successfully!');
+    } catch (error) {
+        console.error('Error sending verification email:', error);
+    }
+};
+
+module.exports = { sendVerificationEmail,sendVerificationOtp};

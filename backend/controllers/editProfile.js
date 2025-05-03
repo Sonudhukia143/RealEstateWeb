@@ -11,6 +11,7 @@ export default async function editProfile (req,res) {
     try {
         const user = req.user;
         if (!user) return res.status(404).json({ message: "User not found" });
+        if(!user.emailVerified) return res.status(401).json({message: "You need to verify your email"});
 
         try{
             const pic = await cloudinary.uploader.upload(blobImg, {

@@ -1,7 +1,9 @@
 import { Col,Card,Image,Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import "../../../styles/profile.css";
 
-export default function ProfileInfo({ state}) {
+export default function ProfileInfo({props}) {
+  const {state,loading} = props;
     return (
         <Col md={4} className="text-center">
         <Card className="shadow-sm">
@@ -15,12 +17,12 @@ export default function ProfileInfo({ state}) {
             />
             <Card.Title>{state?.username}</Card.Title>
             <Card.Text>{state?.gmail}</Card.Text>
-            <Button variant="primary">
+            <Button className={loading?"disabled":""} variant="primary">
               <Link className="text-white text-decoration-none" to="/update-profile">
                 Edit Profile
               </Link>
             </Button>
-            <Button variant="primary m-2">
+            <Button className={loading?"disabled":""} variant="primary m-2">
               <Link className="text-white text-decoration-none" to="/change-password">
                 Change Password
               </Link>

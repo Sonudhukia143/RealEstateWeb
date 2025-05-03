@@ -7,6 +7,7 @@ export default async function addInfo(req, res) {
     try {
         const user = req.user;
         if (!user) return res.status(404).json({ message: "User not found" });
+        if(!user.emailVerified) return res.status(401).json({message: "You need to verify your email"});
 
         const { pincode, city, state, country,UserType } = data.additionalInfo;
         if (!pincode || !city || !state || !country || !UserType) return res.status(400).json({ message: "Please provide all the details" });

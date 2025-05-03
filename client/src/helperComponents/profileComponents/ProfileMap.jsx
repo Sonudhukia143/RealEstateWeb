@@ -1,5 +1,5 @@
 export default function ProfileMap() {
     return (
-            <div id="map"></div>
+            <div id="map" style={{ width: "80%" }}></div>
     )
 }

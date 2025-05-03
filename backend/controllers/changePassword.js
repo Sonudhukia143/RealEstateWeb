@@ -2,8 +2,6 @@ import bcrypt from 'bcrypt';
 
 export default async function changePassword (req,res) {
     const { newPassword, confirmPassword } = JSON.parse(req.body);
-    console.log(newPassword,confirmPassword);
-    console.log(JSON.parse(req.body));
     if(!newPassword || !confirmPassword) return res.status(400).json({ message: 'Please fill all fields' });
     if(newPassword !== confirmPassword) return res.status(400).json({ message: 'Passwords do not match' });
 

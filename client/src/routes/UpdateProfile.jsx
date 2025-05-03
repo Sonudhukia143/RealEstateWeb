@@ -9,7 +9,7 @@ import { setFlashMessage } from "../redux/flash/flashMessage.js";
 
 export default function UpdateProfile () {
     const userState = useSelector(state => state.user);
-    const [formData, setFormData] = useState({username: userState?.currentUser?.user?.username, img: null, previewUrl: userState?.currentUser?.user?.profile});
+    const [formData, setFormData] = useState({username: userState?.currentUser?.user?.username, img: userState?.currentUser?.user?.profile, previewUrl: userState?.currentUser?.user?.profile});
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -33,7 +33,7 @@ export default function UpdateProfile () {
         } catch (err) {
             console.log(err);
             dispatch(signInError("Unexpected Error Occured"));
-            dispatch(setFlashMessage({ message: "Unexpected server error occured!", type: "error" }));
+            dispatch(setFlashMessage({ message: err.message, type: "error" }));
         }
     };
 

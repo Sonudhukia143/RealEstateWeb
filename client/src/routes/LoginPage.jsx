@@ -5,7 +5,7 @@ import { signInStart,signInError,signInSuccess } from "../redux/user/userSlice.j
 import { setFlashMessage } from "../redux/flash/flashMessage.js";
 import fetchData from "../utils/fetchData.js";
 import Loader from "../helperComponents/Loader.jsx";
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import googleAuth from "../utils/googleAuth.js";
 
 export default function Login() {
@@ -95,6 +95,8 @@ export default function Login() {
                     </div>
                     <button type="submit" className="btn btn-primary">LOG IN</button>
                     <button type="button" className="btn btn-danger mt-4" onClick={handleGoogleAuth}>Google LogIn</button>
+                    <p className="col-md"><Link to='/forgotpass'>Forgot Password?</Link></p>
+                    <p className="col-md"><Link to='/signup'>Not a user?</Link></p>
                 </form>
             </div>
         </>

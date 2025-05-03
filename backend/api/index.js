@@ -19,6 +19,8 @@ import updateProfile from '../routes/updateProfile.js';
 import addInfo from '../routes/addInfo.js';
 import fetchInfo from '../routes/getInfo.js';
 import authMiddleware from '../middlewares/checkAuth.js';
+import sendOtp from '../routes/otpRequest.js';
+import verifyOtp from '../routes/otpVerify.js';
 
 const connectDb = async () => {
     if (mongoose.connection.readyState >= 1) {
@@ -53,14 +55,14 @@ app.use(cors(corsOptions));
 app.use('/api/login', logInRouter);
 app.use('/api/logout', logout);
 app.use('/api/signin' ,signUpRouter);
-
+app.use('/api/verify-email', verifyMail);
 app.use('/api/fetch-info', authMiddleware ,fetchInfo);
 app.use('/api/request-verification', authMiddleware ,requestVerification);
-app.use('/api/verify-email', verifyMail);
-
 app.use('/api/change-pass',authMiddleware,changePassword);
 app.use('/api/update-profile',authMiddleware,updateProfile);
 app.use('/api/add-info',authMiddleware,addInfo);
+app.use('/api/send-otp',sendOtp);
+app.use('/api/verify-otp',verifyOtp);
 app.get('/api/test', (req,res) => {
     res.send("Hello, The Backend Is Working");
 });

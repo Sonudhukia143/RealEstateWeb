@@ -3,7 +3,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.esm'
 import Layout from './components/Layout';
 import Loader from './helperComponents/Loader.jsx';
-import { store,persistor } from './redux/store.js';
+import { store, persistor } from './redux/store.js';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import UndefinedPath from './routes/UndefinedPath.jsx';
@@ -18,6 +18,7 @@ const Profile = lazy(() => import('./routes/Profile.jsx'));
 const ProtectedRoute = lazy(() => import('./routes/ProtectedRoute.jsx'));
 const UpdateProfile = lazy(() => import('./routes/UpdateProfile.jsx'));
 const ChangePassword = lazy(() => import('./routes/ChangePassword.jsx'));
+const ForgotPassword = lazy(() => import('./routes/ForgotPassword.jsx'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,6 +39,11 @@ const router = createBrowserRouter(
             <SignUp />
           </Suspense>
         } />
+        <Route path="forgotpass" element={
+          <Suspense fallback={<Loader />}>
+            <ForgotPassword />
+          </Suspense>
+        } />
         <Route path="about" element={
           <Suspense fallback={<Loader />}>
             <About />
@@ -55,13 +61,13 @@ const router = createBrowserRouter(
           } />
           <Route path="/update-profile" element={
             <Suspense fallback={<Loader />}>
-              <UpdateProfile /> 
-              </Suspense>
+              <UpdateProfile />
+            </Suspense>
           } />
           <Route path="/change-password" element={
             <Suspense fallback={<Loader />}>
-              <ChangePassword /> 
-              </Suspense>
+              <ChangePassword />
+            </Suspense>
           } />
         </Route>
         <Route path="*" element={<UndefinedPath />} />

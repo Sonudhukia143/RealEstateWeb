@@ -25,9 +25,9 @@ export default async function fetchData(url, formData,type,token) {
     }else if(type == "UPDATE"){
         let base64String;
 
-        if(typeof formData.img == "string"){
-            base64String = formData.img 
-        }else if(typeof formData.img == "object"){
+        if(typeof formData?.img[0]?.url == "string"){
+            base64String = formData?.img[0]?.url; 
+        }else if(typeof formData?.img == "object"){
             const file = formData.img;
             const toBase64 = (file) => new Promise((resolve, reject) => {
                 const reader = new FileReader();

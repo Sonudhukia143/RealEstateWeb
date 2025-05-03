@@ -1,7 +1,7 @@
 import { Form, Row, Col, Button } from "react-bootstrap";
 import { FaCircle, FaCheck } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { setFlashMessage } from "../../redux/flash/flashMessage.js";
+import {  setFlashMessage } from "../../redux/flash/flashMessage.js";
 import { setInfoUser } from "../../redux/user/userSlice.js";
 
 export default function UserInfoForm({ props }) {
@@ -10,7 +10,16 @@ export default function UserInfoForm({ props }) {
 
     const handleSaveInfo = async () => {
         try {            
-            if (infoFields.length <= 0) return;
+            const checkInput = infoFields.map(info => {
+                if(info.content == "" || info.content == undefined){
+                    return false;
+                }else{
+                    return true;
+                }
+            });
+            if(checkInput.includes(false)){ 
+                throw new Error("Check and enter all fields.");
+            }
             const validFields = infoFields.reduce((acc, field) => {
                 if (field.type.trim() && field.content.trim()) {
                     acc[field.type] = field.content;
@@ -32,7 +41,6 @@ export default function UserInfoForm({ props }) {
 
             const data = await res.json();
             if (res.status === 200 || res.ok) {
-                console.log(data);
                 setShowInfoForm(false);
                 setUserInfo(data.details || []);
                 setInfoFields([
@@ -45,7 +53,6 @@ export default function UserInfoForm({ props }) {
                 dispatch(setInfoUser(data.details));
                 dispatch(setFlashMessage({message:data.message,type:"success"}));
             } else if (res.status != 200) {
-                console.log(data);
                 dispatch(setFlashMessage({message:data.message,type:"error"}));
             }
         } catch (error) {
@@ -69,6 +76,7 @@ export default function UserInfoForm({ props }) {
                                 value={field.content}
                                 onChange={(e) => handleFieldChange(index, 'content', e.target.value)}
                             >
+                                <option value="">Choose Yourself</option>
                                 <option value="Renter">Renter</option>
                                 <option value="Buyer">Buyer</option>
                                 <option value="Property Owner">Property Owner</option>
@@ -86,9 +94,13 @@ export default function UserInfoForm({ props }) {
                 </Row>
             ))}
             <span>
+                {
+                !loading 
+                &&                 
                 <Button variant="outline-secondary" onClick={() => setShowInfoForm(false)} className="me-2">
                     Cancel
                 </Button>
+                }
                 <Button className={loading ? 'disabled primary' : ''} variant={loading ? 'primary' : 'outline-primary'} onClick={handleSaveInfo}>
                     {loading ? <><FaCircle className='spinner-border' /> Saving</> : <><FaCheck /> Save</>}
                 </Button>

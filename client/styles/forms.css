@@ -66,4 +66,9 @@ form {
     display: none;
 }
 
-
+@media (max-width:400px) {
+    .passresetform{
+        width: 90%;
+        margin: auto;
+    }
+}

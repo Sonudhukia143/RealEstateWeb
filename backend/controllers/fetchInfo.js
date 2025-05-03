@@ -3,6 +3,7 @@ import { Detail } from "../models/UserDetails.js";
 export default async function fetchInfo(req, res) {
     const user = req?.user;
     if(!user) return res.status(404).json({message:"No user info provided."});
+    if(!user.emailVerified) return res.status(401).json({message: "You need to verify your email"});
 
     try {
         const userId = user._id;

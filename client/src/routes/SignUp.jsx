@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../helperComponents/Loader.jsx";
 import { signInStart, signInError, signInSuccess } from "../redux/user/userSlice.js";
 import fetchData from "../utils/fetchData.js";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setFlashMessage } from "../redux/flash/flashMessage.js";
 import googleAuth from "../utils/googleAuth.js";
 
@@ -33,7 +33,7 @@ export default function SignUp() {
             }
         } catch (err) {
             dispatch(signInError("Unexpected Error Occured"));
-            dispatch(setFlashMessage({ message: "Unexpected server error occured!", type: "error" }));
+            dispatch(setFlashMessage({ message: err.message, type: "error" }));
         }
     };
 
@@ -133,6 +133,7 @@ export default function SignUp() {
                     {userState.error && <div style={{ color: "red" }}>{userState.error}</div>}
                     <button type="submit" className="btn btn-primary">Sign Up</button>
                     <button type="button" className="btn btn-danger mt-4" onClick={handleGoogleAuth}>Google Sign In</button>
+                    <p className="col-md mt-2"><Link to='/login'>Already a user? LOGIN!</Link></p>
                 </form>
             </div>
         </>
