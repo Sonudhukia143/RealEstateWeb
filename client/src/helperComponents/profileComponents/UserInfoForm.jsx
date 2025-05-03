@@ -29,7 +29,7 @@ export default function UserInfoForm({ props }) {
 
             setLoading(true);
 
-            const res = await fetch('http://localhost:3000/api/add-info', {
+            const res = await fetch('/api/add-info', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

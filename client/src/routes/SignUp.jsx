@@ -21,7 +21,7 @@ export default function SignUp() {
         dispatch(signInStart());
 
         try {
-            const res = await fetchData("http://localhost:3000/api/signin", formData, "SIGNIN");
+            const res = await fetchData("/api/signin", formData, "SIGNIN");
             const data = await res.json();
             if (res.status !== 200 || !res.ok) {
                 dispatch(signInError(data.message));
@@ -45,7 +45,7 @@ export default function SignUp() {
             const formData = await googleAuth();
             if(!formData) dispatch(signInError("Google Verification Unsuccessfully"));
 
-            const res = await fetchData("http://localhost:3000/api/signin", formData, "SIGNIN");
+            const res = await fetchData("/api/signin", formData, "SIGNIN");
 
             const data = await res.json();
             if (res.status !== 200 || !res.ok) {

@@ -12,7 +12,7 @@ export default function NavBar() {
   const signOut = async () => {
     dispatch(signInStart());
     try{
-      const res = await fetch("http://localhost:3000/api/logout", {
+      const res = await fetch("/api/logout", {
         method: 'POST',
         credentials: "include",
       });

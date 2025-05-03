@@ -20,7 +20,7 @@ export default function Login() {
         e.preventDefault();
         dispatch(signInStart());
         try{
-            const res = await fetchData("http://localhost:3000/api/login",formData,"LOGIN");
+            const res = await fetchData("/api/login",formData,"LOGIN");
             console.log(res);
             const data = await res.json();
             console.log(data);
@@ -49,7 +49,7 @@ export default function Login() {
                 token: dat1.token,
             };    
             console.log(formData);
-            const res = await fetchData("http://localhost:3000/api/login",formData,"LOGIN");
+            const res = await fetchData("/api/login",formData,"LOGIN");
             console.log(res);
             const data = await res.json();
             console.log(data);

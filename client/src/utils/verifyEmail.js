@@ -8,7 +8,7 @@ export default async function verifyEmail (state,setVerifyText,setLoading,dispat
     setVerifyText("Sending Email...");
 
     try {
-      const res = await fetch('http://localhost:3000/api/request-verification', {
+      const res = await fetch('/api/request-verification', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

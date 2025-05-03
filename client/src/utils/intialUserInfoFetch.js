@@ -2,7 +2,7 @@ export default async function fetchDetails (setLoading,token) {
       setLoading(true);
 
       try {
-        const res = await fetch(`http://localhost:3000/api/fetch-info`, {
+        const res = await fetch(`/api/fetch-info`, {
           method: 'GET',
           credentials: 'include',
           headers: {

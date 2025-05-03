@@ -21,7 +21,7 @@ export default function ForgotPassword() {
     const sendOtp = async () => {
         setLoading(true);
         try {
-            const res = await fetch('http://localhost:3000/api/send-otp', {
+            const res = await fetch('/api/send-otp', {
                 method: 'POST',
                 credentials: 'include',
                 body: JSON.stringify({ gmail: email }),
@@ -43,7 +43,7 @@ export default function ForgotPassword() {
     const submitOtp = async () => {
         setLoading(true);
         try {
-            const res = await fetch('http://localhost:3000/api/verify-otp', {
+            const res = await fetch('/api/verify-otp', {
                 method: 'POST',
                 credentials: 'include',
                 body: JSON.stringify({ gmail: email, otpVal: otpVal })

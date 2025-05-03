@@ -20,7 +20,7 @@ export default function ChangePassword() {
         e.preventDefault();
         dispatch(signInStart());
         try {
-            const res = await fetchData("http://localhost:3000/api/change-pass", formData, "CHANGEPASS", userState.currentUser.token);
+            const res = await fetchData("/api/change-pass", formData, "CHANGEPASS", userState.currentUser.token);
             const data = await res.json();
             console.log(data);
             if (res.status !== 200 || !res.ok) {
