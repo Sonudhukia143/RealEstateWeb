@@ -1,6 +1,8 @@
-[[redirects]]
-  from = "https://bank-website-23d3.vercel.app/api/:splat"
-  to = ""
-  status = 200
-  force = true
-
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://handlehub-api.onrender.com/api/:path*"
+    }
+  ]
+}
