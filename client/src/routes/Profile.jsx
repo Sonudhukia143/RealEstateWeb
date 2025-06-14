@@ -17,6 +17,7 @@ import fetchMap from '../utils/fetchMap.js';
 export default function Profile() {
   const userState = useSelector(state => state.user?.currentUser);
   const state = userState?.user;
+  const details = userState?.details;
   const token = userState?.token;
   const Info = userState?.details;
   const loc = userState?.location;
@@ -101,7 +102,7 @@ export default function Profile() {
               <Card className="shadow-sm">
                 <Card.Body>
                   <Card.Title>User Information</Card.Title>
-                  <EmailVerification props={{ state, setVerifyText, setLoading, dispatch, signInSuccess, token, verifyButton, loading }} />
+                  <EmailVerification props={{ state, setVerifyText, setLoading, dispatch, signInSuccess, token, verifyButton, loading , details}} />
                   {
                     state?.emailVerified
                     ?

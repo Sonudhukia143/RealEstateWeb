@@ -11,9 +11,9 @@ const signUpHandleChange = (e,ref,setFormData,formData) => {
             if (file.size > MAX_FILE_SIZE) {
                 alert("File size exceeds 5MB. Please upload a smaller file.");
                 return;
-            }
+            };
 
-            setFormData({...formData, [ref]:file})
+            setFormData({...formData, [ref]:file});
 
             const previewUrl = URL.createObjectURL(file);
             setFormData(prevState => ({...prevState , previewUrl:previewUrl}));

@@ -35,7 +35,7 @@ export default function NavBar() {
   return (
     <>
       {userState.loading && <Loader props={"Clearing Session"} />}
-      <Navbar className="navb" expand="md">
+      <Navbar className="navb" id="navbar" expand="md">
         <Container className="container" fluid>
           <Navbar.Brand as={Link} to="/"><b style={{ color: "grey" }}>Maisen</b>Monde</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbar-nav" />

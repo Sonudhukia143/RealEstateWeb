@@ -4,6 +4,6 @@ import { upload } from '../cloudinary/cloudinaryConfig.js';
 
 const router = Router();
 
-router.post('/',upload.single('img') , signupuser);
+router.post('/', upload.single('img') , signupuser);
 
 export default router;

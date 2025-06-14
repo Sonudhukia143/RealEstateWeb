@@ -20,6 +20,7 @@ const loginUser = async (req, res) => {
                 if (!decodedToken) return res.status(404).json({ message: "Unable to decode token." });
 
                 user = await User.findOne({ gmail:decodedToken.email });
+                console.log(user);
             }catch(error){
                 if(error) return res.status(404).json({message:error});
             }

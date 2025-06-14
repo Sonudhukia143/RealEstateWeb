@@ -2,7 +2,7 @@ import { useState } from "react";
 import { loginHandleChange } from "../utils/handleChange.js";
 import {useDispatch, useSelector} from "react-redux";
 import { signInStart,signInError,signInSuccess } from "../redux/user/userSlice.js";
-import { setFlashMessage } from "../redux/flash/flashMessage.js";
+import { clearFlashMessage, setFlashMessage } from "../redux/flash/flashMessage.js";
 import fetchData from "../utils/fetchData.js";
 import Loader from "../helperComponents/Loader.jsx";
 import {Link, useNavigate} from 'react-router-dom';
@@ -24,7 +24,7 @@ export default function Login() {
             console.log(res);
             const data = await res.json();
             console.log(data);
-            if (res.status !== 200 || !res.ok) {
+            if (res.status !== 200) {
                 dispatch(signInError(data.message));
                 dispatch(setFlashMessage({ message: data.message, type: "error" }));
             } else {
@@ -65,6 +65,8 @@ export default function Login() {
             dispatch(signInError("Unexpected Error Occured"));
             dispatch(setFlashMessage({ message: "Unexpected error occurred. Please try again.", type: "danger" }));
             console.log(err);
+        }finally {
+            dispatch(clearFlashMessage());
         }
     }
 

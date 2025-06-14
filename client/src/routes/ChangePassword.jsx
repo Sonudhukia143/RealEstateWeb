@@ -22,7 +22,6 @@ export default function ChangePassword() {
         try {
             const res = await fetchData("/api/change-pass", formData, "CHANGEPASS", userState.currentUser.token);
             const data = await res.json();
-            console.log(data);
             if (res.status !== 200 || !res.ok) {
                 dispatch(signInError(data.message));
                 dispatch(setFlashMessage({ message: data.message, type: "error" }));

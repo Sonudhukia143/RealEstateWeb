@@ -21,6 +21,8 @@ import fetchInfo from '../routes/getInfo.js';
 import authMiddleware from '../middlewares/checkAuth.js';
 import sendOtp from '../routes/otpRequest.js';
 import verifyOtp from '../routes/otpVerify.js';
+import uploadImg from '../routes/uploadListing.js';
+import addListing from '../routes/addListing.js';
 
 const connectDb = async () => {
     if (mongoose.connection.readyState >= 1) {
@@ -37,6 +39,7 @@ const connectDb = async () => {
 };
 
 const app = express();
+
 app.set('trust proxy', true);
 app.use(express.urlencoded({ extended: true }));
 app.use(mongoSanitize());
@@ -61,6 +64,9 @@ app.use('/api/request-verification', authMiddleware ,requestVerification);
 app.use('/api/change-pass',authMiddleware,changePassword);
 app.use('/api/update-profile',authMiddleware,updateProfile);
 app.use('/api/add-info',authMiddleware,addInfo);
+app.use('/api/uploadImg',authMiddleware,uploadImg);
+app.use('/api/add-listing', authMiddleware, addListing);
+
 app.use('/api/send-otp',sendOtp);
 app.use('/api/verify-otp',verifyOtp);
 app.get('/api/test', (req,res) => {
