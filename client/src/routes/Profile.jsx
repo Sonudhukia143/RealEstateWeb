@@ -13,6 +13,7 @@ import { setFlashMessage } from '../redux/flash/flashMessage.js';
 import '../../styles/profile.css';
 import ProfileMap from '../helperComponents/profileComponents/ProfileMap.jsx';
 import fetchMap from '../utils/fetchMap.js';
+import fetchData from '../utils/fetchData.js';
 
 export default function Profile() {
   const userState = useSelector(state => state.user?.currentUser);
@@ -91,6 +92,16 @@ export default function Profile() {
       }
     }
   }, [Info,state?.emailVerified]);
+
+  useEffect(() => {
+    async function fetchUserData() {
+      console.log("FETCHING INFO");
+      const res = await fetchData("/api/admin/listings", null, "GETLISTINGADMIN", token);
+      const data = await res.json();
+      console.log(data);
+    }
+    fetchUserData();
+  },[])
 
   return (
     <>

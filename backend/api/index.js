@@ -23,6 +23,8 @@ import sendOtp from '../routes/otpRequest.js';
 import verifyOtp from '../routes/otpVerify.js';
 import uploadImg from '../routes/uploadListing.js';
 import addListing from '../routes/addListing.js';
+import viewOneListing from '../routes/viewOneListing.js';
+import viewListingAdmin from '../routes/viewListingAdmin.js';
 
 const connectDb = async () => {
     if (mongoose.connection.readyState >= 1) {
@@ -66,6 +68,8 @@ app.use('/api/update-profile',authMiddleware,updateProfile);
 app.use('/api/add-info',authMiddleware,addInfo);
 app.use('/api/uploadImg',authMiddleware,uploadImg);
 app.use('/api/add-listing', authMiddleware, addListing);
+app.use('/api/get-listing', authMiddleware, viewOneListing);
+app.use('/api/admin/listings',authMiddleware,viewListingAdmin);
 
 app.use('/api/send-otp',sendOtp);
 app.use('/api/verify-otp',verifyOtp);

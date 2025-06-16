@@ -1,5 +1,6 @@
 import { cloudinary } from '../cloudinary/cloudinaryConfig.js';
 import { Listing, validateListing } from '../models/Listing.js';
+import { User } from '../models/User.js';
 
 const uploadImg = async function (req, res) {
     try {
@@ -33,13 +34,47 @@ const addListing = async (req, res) => {
         const newListing = await Listing.create(listingData);
         if (!newListing) return res.status(404).json({ message: "Unable to save listing." });
 
+        const newUser = await User.findById(req.user._id);
+        newUser.listings.push(newListing._id);
+        const updatedUser = await newUser.save();
+        console.log(updatedUser);
+        if(!updatedUser) return res.status(404).json({message:"Unable to update user."});
+
         const savedListing = await newListing.save();
         if (!savedListing) return res.status(404).json({ message: "Unable to save listing." });
 
         return res.status(200).json({ message: "Listing added successfully" });
     } catch (error) {
+        console.error("Error adding listing:", error);
         return res.status(500).json({ message: error.message });
     }
 }
 
-export { uploadImg, addListing };
+const viewOneListing = async (req, res) => {
+    try {
+        const listingId = req.params.id;
+        console.log("Listing ID:", listingId);
+
+        if (!listingId) return res.status(400).json({ message: "Listing ID is required" });
+        const listing = await Listing.findById({_id: listingId});
+
+        console.log("Listing found:", listing);
+        if (!listing) return res.status(404).json({ message: "Listing not found" });
+
+        return res.status(200).json(listing);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+const viewListingAdmin = async (req,res) => {
+    try{
+        const listing = await Listing.findById(req.user.listings[0]);
+        console.log(listing);
+
+    }catch(err){
+        console.log(err);
+    }
+}
+
+export { uploadImg, addListing , viewOneListing , viewListingAdmin};

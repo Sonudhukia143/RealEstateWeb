@@ -30,7 +30,8 @@ const userSchema = new mongoose.Schema({
     info:{
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Info'
-    },  
+    },
+    listings:[]  
 });
 
 const User = mongoose.model("User", userSchema);

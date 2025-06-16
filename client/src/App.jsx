@@ -20,6 +20,7 @@ const UpdateProfile = lazy(() => import('./routes/UpdateProfile.jsx'));
 const ChangePassword = lazy(() => import('./routes/ChangePassword.jsx'));
 const ForgotPassword = lazy(() => import('./routes/ForgotPassword.jsx'));
 const AddListing = lazy(() => import('./routes/AddListing.jsx'));
+const ListingDetails = lazy(() => import('./routes/ListingDetails.jsx'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -73,6 +74,11 @@ const router = createBrowserRouter(
           <Route path="/add-listing" element={
             <Suspense fallback={<Loader />}>
               <AddListing />
+            </Suspense>
+          } />
+          <Route path="/listing/:id" element={
+            <Suspense fallback={<Loader />}>
+              <ListingDetails />
             </Suspense>
           } />
         </Route>

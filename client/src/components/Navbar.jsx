@@ -3,10 +3,9 @@ import { Navbar, Nav, Container, Form, Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, signInStart } from '../redux/user/userSlice.js';
 import { setFlashMessage } from '../redux/flash/flashMessage.js';
-import Loader from '../helperComponents/Loader';
+import Loader from '../helperComponents/Loader.jsx';
 
 export default function NavBar() {
-
   const userState = useSelector(state => state.user);
   const dispatch = useDispatch();
   const signOut = async () => {
@@ -16,9 +15,7 @@ export default function NavBar() {
         method: 'POST',
         credentials: "include",
       });
-      console.log(res);
       const data = await res.json();
-      console.log(data);
       if (res.ok || res.status == 200) {
         dispatch(logout());
         dispatch(setFlashMessage({ message: data.message, type: "success" }));

@@ -106,5 +106,25 @@ export default async function fetchData(url, formData, type, token) {
         });
 
         return res;
+    } else if(type == "GETLISTING"){
+        const res = await fetch(url, {
+            method: "GET",
+            headers: {
+                'Authorization': `${token}`,
+            },
+            credentials: "include"
+        });
+
+        return res;
+    }  else if(type == "GETLISTINGADMIN"){
+        const res = await fetch(url, {
+            method: "GET",
+            headers: {
+                'Authorization': `${token}`,
+            },
+            credentials: "include"
+        });
+
+        return res;
     }
 }
