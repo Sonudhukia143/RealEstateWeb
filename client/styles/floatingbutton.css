@@ -1,0 +1,117 @@
+.floating-back-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.floating-back-btn:active {
+    transform: scale(0.95);
+}
+
+.floating-back-btn.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    animation: none;
+}
+
+.circle-icon {
+    font-weight: bold;
+    animation: click-shrink 0.3s ease-in-out;
+}
+
+@keyframes glow-pulse {
+    0% {
+        box-shadow: 0 0 0 rgba(13, 110, 253, 0.6);
+    }
+
+    50% {
+        box-shadow: 0 0 10px rgba(13, 110, 253, 0.8);
+    }
+
+    100% {
+        box-shadow: 0 0 0 rgba(13, 110, 253, 0.6);
+    }
+}
+
+@keyframes initial-cylinder {
+    0% {
+        width: 40vh;
+        height: 20vh;
+    }
+
+    100% {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #0d6efd;
+        color: white;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s ease;
+        animation: glow-pulse 2.5s infinite ease-in-out;
+        overflow: hidden;
+
+    }
+}
+
+#button {
+    animation: initial-cylinder 2s ease-in 0.5s 1;
+}
+
+.floating-back-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: grey;
+    color: black;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s ease;
+    animation: glow-pulse 2.5s infinite ease-in-out;
+    overflow: hidden;
+}
+
+.button-text {
+    font-size: 1.2em;
+    padding: 0 1rem;
+    text-align: center;
+    transition: font-size 0.4s ease, transform 0.4s ease;
+}
+
+.floating-back-btn.shrunk {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.floating-back-btn.shrunk .button-text {
+    font-size: 1.6em;
+    transform: scale(1.2);
+    padding: 0;
+}
+
+.floating-back-btn.shrunk .button-text {
+  opacity: 0;
+  transform: scale(0.1);
+}
+
+.button-text {
+  transition: font-size 0.4s ease, transform 0.4s ease, opacity 0.4s ease;
+}

@@ -21,7 +21,7 @@ export default function FlashMessage({ message, duration = 3000, type = "info" }
     const bgColor = type === "error" ? "danger" : type === "success" ? "success" : "warning";
 
     return (
-        <Alert variant={bgColor} onClose={() => setVisible(false)} dismissible>
+        <Alert variant={bgColor} onClose={() => setVisible(false)} dismissible style={{position:"absolute",top:"12vh",width:"100%",zIndex:"99999"}}>
             <Alert.Heading>{type}!</Alert.Heading>
             <p>
                 {message}

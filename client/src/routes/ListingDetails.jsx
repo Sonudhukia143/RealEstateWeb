@@ -4,12 +4,11 @@ import {
     Container, Row, Col, Image, Card, Badge,
     Spinner, Alert, Form, Button
 } from 'react-bootstrap';
-import fetchData from '../utils/fetchData';
+import fetchData from '../utils/fetchData.js';
 import { useDispatch, useSelector } from 'react-redux';
-import fetchMap from '../utils/fetchMap';
-import getDistanceFromLatLonInKm from '../utils/distanceCalculator';
-import { setFlashMessage } from '../redux/flash/flashMessage';
-import ListingCard from '../helperComponents/ListingCard';
+import fetchMap from '../utils/fetchMap.js';
+import getDistanceFromLatLonInKm from '../utils/distanceCalculator.js';
+import { setFlashMessage } from '../redux/flash/flashMessage.js';
 
 export default function ListingDetails() {
     const { id } = useParams();
@@ -26,10 +25,6 @@ export default function ListingDetails() {
 
     const [messageSent, setMessageSent] = useState(false);
 
-    const onDelete = (id) => {
-        console.log(`Delete listing with ID: ${id}`);
-    }
-
     // Distance calculation (based on coordinates after geolocation fetch)
     const distance = (userLoc && listingLocation)
         ? getDistanceFromLatLonInKm(userLoc.lat, userLoc.lon, listingLocation.lat, listingLocation.lon)
@@ -38,7 +33,7 @@ export default function ListingDetails() {
     useEffect(() => {
         const fetchListing = async () => {
             try {
-                const res = await fetchData(`https://bank-website-23d3.vercel.app/api/get-listing/${id}`, null, 'GETLISTING', token);
+                const res = await fetchData(`/api/get-listing/${id}`, null, 'GETLISTING', token);
                 const data = await res.json();
                 if (res.ok) {
                     setListing(data);
@@ -88,8 +83,6 @@ export default function ListingDetails() {
         e.preventDefault();
         setMessageSent(true);
         dispatch(setFlashMessage({ message: "Message sent to the owner!", type: "success" }));
-
-        // You can also trigger a real API to send the message here.
     };
 
     if (loading) {

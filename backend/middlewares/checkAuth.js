@@ -11,6 +11,7 @@ const authMiddleware = async (req, res, next) => {
 
         const user = await User.findById(decoded.id); // Exclude the password field
         if(!user) res.status(401).json({ message:"User Not Found"})
+        if(!user.emailVerified) res.status(404).json({message:"You have not verified your email yet"})
 
         req.user = user;
         req.token = token;

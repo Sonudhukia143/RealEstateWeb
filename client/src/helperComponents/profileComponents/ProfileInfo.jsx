@@ -5,8 +5,8 @@ import "../../../styles/profile.css";
 export default function ProfileInfo({props}) {
   const {state,loading} = props;
     return (
-        <Col md={4} className="text-center">
-        <Card className="shadow-sm">
+        <Col md={4} className="text-center ">
+        <Card className="shadow-lg">
           <Card.Body>
             <Image
               src={state?.profile ? state?.profile : 'assets/profile.webp'}

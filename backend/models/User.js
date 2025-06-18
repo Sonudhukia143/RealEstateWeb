@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Info'
     },
-    listings:[]  
+    listings:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Listing' }]  
 });
 
 const User = mongoose.model("User", userSchema);

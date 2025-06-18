@@ -57,6 +57,10 @@ const listingSchema = new mongoose.Schema({
     ownerGmail: {
         type: String,
         required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 });
 
@@ -78,7 +82,8 @@ const validateListing = (listing) => {
         imageUrls: Joi.array().required(),
         owner: Joi.required(), // Assuming owner is a user ID
         ownerName: Joi.string().required(),
-        ownerGmail: Joi.string().email().required()
+        ownerGmail: Joi.string().email().required(),
+        createdAt: Joi.required()
     });
     return schema.validate(listing);
 };

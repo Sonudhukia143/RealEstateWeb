@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { Card, Button, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-export default function ListingCard({ listing, onDelete }) {
+export default function ListingCard({ listing, onDelete, userGmail }) {
     const {
         _id,
         name,
@@ -12,7 +13,19 @@ export default function ListingCard({ listing, onDelete }) {
         type,
         address,
         offer,
+        ownerGmail
     } = listing;
+    const [loading, setLoading] = useState(false);
+
+
+    const deleteListing = async (id) => {
+        setLoading(true);
+        try {
+            await onDelete(id);
+        } catch (error) {
+            console.error("Error deleting listing:", error);
+        }
+    }
 
     return (
         <Card className="shadow-sm border rounded overflow-hidden">
@@ -51,20 +64,22 @@ export default function ListingCard({ listing, onDelete }) {
 
                     <div className="d-flex flex-column align-items-end">
                         <Link to={`/listing/${_id}`}>
-                        <Button size="sm" variant="primary">
-                            View
-                        </Button>
-                    </Link>
-                    {onDelete && (
-                        <Button
-                            variant="danger"
-                            size="sm"
-                            className="mt-2"
-                            onClick={() => onDelete(_id)}
-                        >
-                            Delete
-                        </Button>
-                    )}
+                            <Button size="sm" variant="primary">
+                                View
+                            </Button>
+                        </Link>
+                        {
+                            userGmail === ownerGmail
+                            &&
+                            <Button
+                                variant="danger"
+                                size="sm"
+                                className={loading ? "mt-2 disabled" : "mt-2"}
+                                onClick={() => deleteListing(_id)}
+                            >
+                                {loading ? "Deleting..." : "Delete"}
+                            </Button>
+                        }
                     </div>
                 </div>
             </Card.Body>

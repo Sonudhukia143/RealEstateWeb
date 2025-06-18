@@ -5,26 +5,29 @@
     grid-template-columns: 1fr 1fr;
 }
 
-h1 button{
+h1 button {
     background-color: transparent;
     border: 0px solid transparent;
     font-size: small;
     display: block;
 }
 
-.leftDiv{
+.leftDiv {
     display: flex;
     align-items: center;
     padding: 1vh;
 }
-.leftDiv a{
+
+.leftDiv a {
     text-decoration: none;
     font-size: medium;
 }
-.leftDiv a:hover{
+
+.leftDiv a:hover {
     text-decoration: underline;
 }
-.rightDiv{
+
+.rightDiv {
     background-image: url('/assets/houseimage.webp');
     background-size: cover;
     background-repeat: no-repeat;
@@ -34,97 +37,120 @@ h1 button{
 
 
 @media (max-width:300px) {
-    .mainDiv{
+    .mainDiv {
         grid-template-columns: 1fr;
     }
-    .boxes{
+
+    .boxes {
         display: grid;
         grid-template-columns: 1fr;
         row-gap: 4vh;
     }
-    .offers{
+
+    .offers {
         display: block;
         margin-top: 10vh;
     }
 }
 
-@media (max-width:700px) and (min-width:300px){
-    .mainDiv{
+@media (max-width:700px) and (min-width:300px) {
+    .mainDiv {
         grid-template-columns: 1fr;
     }
-    .leftDiv{
+
+    .leftDiv {
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 0vh;
     }
-    .leftDiv h1{
+
+    .leftDiv h1 {
         width: 50%;
     }
-    .boxes{
+
+    .boxes {
         display: grid;
-        grid-template-columns: 1fr 1fr;
         gap: 2vh;
     }
-    .offers{
+
+    .offers {
         display: block;
         margin: 1vh;
     }
 }
 
-@media (max-width:500px) and (min-width:300px){
-    .boxes{
+@media (max-width:500px) and (min-width:300px) {
+    .boxes {
+        display: grid;
+        gap: 2vh;
+    }
+
+    .dividingDiv {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 2vh;
+        gap: 4vh
     }
 }
 
-@media (min-width:700px){
-    .mainDiv{
+@media (min-width:700px) {
+    .mainDiv {
         grid-template-columns: 1fr 1fr;
     }
-    .boxes{
+
+    .boxes {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
         gap: 5vh;
     }
-    .offers{
+
+    .offers {
         display: block;
         padding: 1vh;
         margin: 5vh;
+    }
+
+    .dividingDiv {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4vh
     }
 }
-@media (min-width:900px){
-    .mainDiv{
-        grid-template-columns: 1fr 1fr;
-    }
-    .boxes{
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+
+@media (min-width:900px) {
+    .boxes {
         gap: 5vh;
     }
-    .offers{
-        display: block;
-        padding: 1vh;
-        margin: 5vh;
-    }
-    .properties{
+
+    .properties {
         padding-left: 10vh;
         padding-right: 10vh;
     }
+
+    .offers {
+        padding: 1vh;
+        margin: 5vh;
+    }
+
+    .dividingDiv {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 4vh
+    }
 }
-.properties{
+
+.properties {
     padding-left: 2vh;
     padding-right: 2vh;
 }
 
-.offers a{
+.offers a {
     text-decoration: none;
 }
-.offers a:hover{
+
+.offers a:hover {
     text-decoration: underline;
 }
-.offers h3{
+
+.offers h3 {
     color: slateblue;
 }

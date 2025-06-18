@@ -21,6 +21,7 @@ const ChangePassword = lazy(() => import('./routes/ChangePassword.jsx'));
 const ForgotPassword = lazy(() => import('./routes/ForgotPassword.jsx'));
 const AddListing = lazy(() => import('./routes/AddListing.jsx'));
 const ListingDetails = lazy(() => import('./routes/ListingDetails.jsx'));
+const AllListings = lazy(() => import('./routes/AllListings.jsx'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -79,6 +80,11 @@ const router = createBrowserRouter(
           <Route path="/listing/:id" element={
             <Suspense fallback={<Loader />}>
               <ListingDetails />
+            </Suspense>
+          } />
+          <Route path="/listings" element={
+            <Suspense fallback={<Loader />}>
+              <AllListings />
             </Suspense>
           } />
         </Route>

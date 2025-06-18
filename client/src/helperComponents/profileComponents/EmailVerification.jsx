@@ -39,7 +39,6 @@ export default function EmailVerification({ props }) {
                                 </Nav.Link>
                         )
                     }
-
                 </div>
             </Col>
         </Row >

@@ -126,5 +126,32 @@ export default async function fetchData(url, formData, type, token) {
         });
 
         return res;
+    }  else if (type == "DELETELISTING"){
+        const res = await fetch(url, {
+            method: "DELETE",
+            headers: {
+                'Authorization': `${token}`,
+            },
+            credentials: "include"
+        });
+
+        return res;
+    }  else if(type == "ALLLISTINGS"){
+        const res = await fetch(url, {
+            method: "GET",
+            headers: {
+                'Authorization': `${token}`,
+            },
+            credentials: "include"
+        });
+
+        return res;
+    } else if (type == "INITIALFETCH"){
+        const res = await fetch(url,{
+            method:"GET",
+            credentials:"include"
+        });
+        
+        return res;
     }
 }
