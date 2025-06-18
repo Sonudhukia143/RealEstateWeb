@@ -36,7 +36,7 @@ export default function AllListings() {
         const fetchAllListingData = async () => {
             try {
                 const response = await fetchData(
-                    "/api/listings",
+                    "https://bank-website-23d3.vercel.app/api/listings",
                     null,
                     "ALLLISTINGS",
                     token
@@ -67,7 +67,7 @@ export default function AllListings() {
     const handleDelete = async (id) => {
         try {
             const response = await fetchData(
-                `/api/delete-listing/${id}`,
+                `https://bank-website-23d3.vercel.app/api/delete-listing/${id}`,
                 null,
                 "DELETELISTING",
                 token

@@ -14,7 +14,7 @@ export default function Home() {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const res = await fetchData("/api/initial-fetch", null, "INITIALFETCH", null);
+                const res = await fetchData("https://bank-website-23d3.vercel.app/api/initial-fetch", null, "INITIALFETCH", null);
                 const data = await res.json();
                 if (res.status === 200) {
                     dispatch(fetchInitialFetchListings(data));

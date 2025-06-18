@@ -80,7 +80,7 @@ export default function CreateListing() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetchData("/api/uploadImg", files, "UPLOADIMG", token);
+      const res = await fetchData("https://bank-website-23d3.vercel.app/api/uploadImg", files, "UPLOADIMG", token);
       const data = await res.json();
 
       setFileUrl((prevUrls) => [...prevUrls, data.url]);
@@ -107,7 +107,7 @@ export default function CreateListing() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetchData("/api/add-listing", formData, "CREATELISTING", token);
+      const res = await fetchData("https://bank-website-23d3.vercel.app/api/add-listing", formData, "CREATELISTING", token);
       const data = await res.json();
 
       if (res.status == 200) {
