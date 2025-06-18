@@ -5,7 +5,7 @@ import "../../styles/profile.css";
 import fetchData from '../utils/fetchData';
 import { useNavigate } from 'react-router-dom';
 import { setFlashMessage } from '../redux/flash/flashMessage';
-import { fetchListings, setShouldFetchListingsTrue } from '../redux/listing/listingAdded';
+import { fetchListings, setShouldFetchAllListingsTrue, setShouldFetchInitialListingsFalse, setShouldFetchInitialListingsTrue, setShouldFetchListingsTrue } from '../redux/listing/listingAdded';
 
 export default function CreateListing() {
   const [formData, setFormData] = useState({
@@ -135,6 +135,8 @@ export default function CreateListing() {
         dispatch(setFlashMessage({ message: data.message, type: "success" }));
         navigate(`/listing/${data.listingId}`); // Redirect to the newly created listing
         dispatch(setShouldFetchListingsTrue()); // Trigger a fetch for listings
+        dispatch(setShouldFetchAllListingsTrue());
+        dispatch(setShouldFetchInitialListingsTrue());
         dispatch(fetchListings(null)); // Clear the current listings in the store
       } else {
         dispatch(setFlashMessage({ message: data.message, type: "error" }));
