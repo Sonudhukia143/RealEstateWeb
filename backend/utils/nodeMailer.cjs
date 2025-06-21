@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
 
 async function sendVerificationEmail (email, token) {
     if (!email || !token) console.error('Email and token are required');
-    const verificationLink = `http://localhost:3000/api/verify-email?token=${token}`;
+    const verificationLink = `https://bank-website-23d3.vercel.app/api/verify-email?token=${token}`;
 
     const mailOptions = {
         from: "TEAM MAISEN MONDE",
