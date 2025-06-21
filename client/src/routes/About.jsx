@@ -117,7 +117,7 @@ export default function About() {
                     {["react", "nodejs", "mongodb", "bootstrap"].map((tech, i) => (
                         <Col xs={6} sm={3} md={2} key={tech} data-aos="zoom-in" data-aos-delay={i * 150}>
                             <Card className="p-3 shadow-sm border-0 bg-white rounded-4">
-                                <img src={`/public/assets/${tech}.svg`} alt={tech} width={50} className="mx-auto" />
+                                <img src={`/assets/${tech}.svg`} alt={tech} width={50} className="mx-auto" />
                                 <p className="mt-2 fw-semibold">{tech.toUpperCase()}</p>
                             </Card>
                         </Col>
