@@ -11,7 +11,7 @@ export default function NavBar() {
   const signOut = async () => {
     dispatch(signInStart());
     try{
-      const res = await fetch("/api/logout", {
+      const res = await fetch("https://bank-website-23d3.vercel.app/api/logout", {
         method: 'POST',
         credentials: "include",
       });

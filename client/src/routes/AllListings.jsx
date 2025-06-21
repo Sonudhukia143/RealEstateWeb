@@ -55,7 +55,7 @@ export default function AllListings() {
   useEffect(() => {
     const fetchAllListingData = async () => {
       try {
-        const response = await fetchData("/api/listings", null, "ALLLISTINGS", token);
+        const response = await fetchData("https://bank-website-23d3.vercel.app/api/listings", null, "ALLLISTINGS", token);
         const data = await response.json();
         if (response.status === 200) {
           dispatch(fetchAllListings(data.listings));
@@ -79,7 +79,7 @@ export default function AllListings() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetchData(`/api/delete-listing/${id}`, null, "DELETELISTING", token);
+      const response = await fetchData(`https://bank-website-23d3.vercel.app/api/delete-listing/${id}`, null, "DELETELISTING", token);
       const data = await response.json();
       if (response.ok) {
         dispatch(setFlashMessage({ message: data.message, type: "success" }));

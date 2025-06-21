@@ -33,7 +33,7 @@ export default function ListingDetails() {
     useEffect(() => {
         const fetchListing = async () => {
             try {
-                const res = await fetchData(`/api/get-listing/${id}`, null, 'GETLISTING', token);
+                const res = await fetchData(`https://bank-website-23d3.vercel.app/api/get-listing/${id}`, null, 'GETLISTING', token);
                 const data = await res.json();
                 if (res.ok) {
                     setListing(data);

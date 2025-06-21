@@ -20,7 +20,7 @@ export default function ChangePassword() {
         e.preventDefault();
         dispatch(signInStart());
         try {
-            const res = await fetchData("/api/change-pass", formData, "CHANGEPASS", userState.currentUser.token);
+            const res = await fetchData("https://bank-website-23d3.vercel.app/api/change-pass", formData, "CHANGEPASS", userState.currentUser.token);
             const data = await res.json();
             if (res.status !== 200 || !res.ok) {
                 dispatch(signInError(data.message));

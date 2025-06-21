@@ -20,7 +20,7 @@ export default function UpdateProfile () {
         dispatch(signInStart());
 
         try {
-            const res = await fetchData("/api/update-profile", formData, "UPDATE",userState.currentUser.token);
+            const res = await fetchData("https://bank-website-23d3.vercel.app/api/update-profile", formData, "UPDATE",userState.currentUser.token);
             const data = await res.json();
             if (res.status !== 200 || !res.ok) {
                 dispatch(signInError(data.message));
