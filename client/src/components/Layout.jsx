@@ -5,6 +5,7 @@ import FlashMessage from "../helperComponents/FlashMessage.jsx";
 import { useSelector } from "react-redux";
 import FloatingBackButton from "../helperComponents/FloatingButton.jsx";
 import RouteTracker from "../helperComponents/RouteTracker.jsx";
+import "../../styles/aos.css";
 
 export default function Layout() {
     const flashMessage = useSelector(state => state.flash);

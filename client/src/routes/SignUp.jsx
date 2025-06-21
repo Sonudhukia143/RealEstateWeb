@@ -29,7 +29,7 @@ export default function SignUp() {
             } else {
                 dispatch(signInSuccess(data));
                 dispatch(setFlashMessage({ message: "Welcome Back! Login successful!", type: "success" }));
-                navigate('/');
+                navigate('/profile');
             }
         } catch (err) {
             dispatch(signInError("Unexpected Error Occured"));
@@ -54,7 +54,7 @@ export default function SignUp() {
             } else {
                 dispatch(signInSuccess(data));
                 dispatch(setFlashMessage({ message: "Welcome Back! Login successful!", type: "success" }));
-                navigate('/');
+                navigate('/profile');
             }
         } catch (err) {
             dispatch(signInError("Unexpected Error Occured"));

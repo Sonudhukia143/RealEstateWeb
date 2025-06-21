@@ -3,5 +3,4 @@
   to = "https://bank-website-23d3.vercel.app/api/:splat"
   status = 200
   force = true
-  headers = { "Content-Type" = "*" }
-
+  headers = { Content-Type = "*" }

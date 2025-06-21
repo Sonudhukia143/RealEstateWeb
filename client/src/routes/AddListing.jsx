@@ -5,7 +5,7 @@ import "../../styles/profile.css";
 import fetchData from '../utils/fetchData';
 import { useNavigate } from 'react-router-dom';
 import { setFlashMessage } from '../redux/flash/flashMessage';
-import { fetchListings, setShouldFetchAllListingsTrue, setShouldFetchInitialListingsFalse, setShouldFetchInitialListingsTrue, setShouldFetchListingsTrue } from '../redux/listing/listingAdded';
+import { fetchListings, setShouldFetchAllListingsTrue, setShouldFetchInitialListingsTrue, setShouldFetchListingsTrue } from '../redux/listing/listingAdded';
 
 export default function CreateListing() {
   const [formData, setFormData] = useState({
@@ -80,7 +80,7 @@ export default function CreateListing() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetchData("https://bank-website-23d3.vercel.app/api/uploadImg", files, "UPLOADIMG", token);
+      const res = await fetchData("/api/uploadImg", files, "UPLOADIMG", token);
       const data = await res.json();
 
       setFileUrl((prevUrls) => [...prevUrls, data.url]);
@@ -107,7 +107,7 @@ export default function CreateListing() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetchData("https://bank-website-23d3.vercel.app/api/add-listing", formData, "CREATELISTING", token);
+      const res = await fetchData("/api/add-listing", formData, "CREATELISTING", token);
       const data = await res.json();
 
       if (res.status == 200) {
@@ -135,9 +135,9 @@ export default function CreateListing() {
         dispatch(setFlashMessage({ message: data.message, type: "success" }));
         navigate(`/listing/${data.listingId}`); // Redirect to the newly created listing
         dispatch(setShouldFetchListingsTrue()); // Trigger a fetch for listings
+        dispatch(fetchListings(null)); // Clear the current listings in the store
         dispatch(setShouldFetchAllListingsTrue());
         dispatch(setShouldFetchInitialListingsTrue());
-        dispatch(fetchListings(null)); // Clear the current listings in the store
       } else {
         dispatch(setFlashMessage({ message: data.message, type: "error" }));
       }

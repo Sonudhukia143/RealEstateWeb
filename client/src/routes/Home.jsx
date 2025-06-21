@@ -14,7 +14,7 @@ export default function Home() {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const res = await fetchData("https://bank-website-23d3.vercel.app/api/initial-fetch", null, "INITIALFETCH", null);
+                const res = await fetchData("/api/initial-fetch", null, "INITIALFETCH", null);
                 const data = await res.json();
                 if (res.status === 200) {
                     dispatch(fetchInitialFetchListings(data));
@@ -53,7 +53,7 @@ export default function Home() {
             <div className="properties" id="properties">
                 <span className="offers" key={"weeklyLisitings"}>
                     <h3>Recent offers</h3>
-                    <p><a href="#">Show more offers</a></p>
+                    <p>Some recent places</p>
                     <div className="dividingDiv">
 
                         {
@@ -95,7 +95,7 @@ export default function Home() {
 
                 <span className="offers" key={"randomRentListings"}>
                     <h3>Recent places for rent</h3>
-                    <p><a href="#">Show more places for rent</a></p>
+                    <p>Some places for rent</p>
                     <div className="dividingDiv">
                         {
                             listings === null
@@ -137,7 +137,7 @@ export default function Home() {
 
                 <span className="offers" key={"randomSaleListings"}>
                     <h3>Recent places for sale</h3>
-                    <p><a href="#">Show more places for sale</a></p>
+                    <p>Some places for sale</p>
                     <div className="dividingDiv">
                         {
                             listings === null

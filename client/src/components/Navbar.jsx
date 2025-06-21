@@ -38,22 +38,6 @@ export default function NavBar() {
           <Navbar.Toggle aria-controls="navbar-nav" />
           <Navbar.Collapse id="navbar-nav">
             <Nav className="ms-auto">
-
-              <span className="searchBar">
-                <Row className="row" id="row">
-                  <Col xs="auto">
-                    <Form.Control
-                      type="text"
-                      placeholder="Search"
-                      className="mr-sm-2"
-                    />
-                  </Col>
-                  <Col xs="auto">
-                    <img className="logo" src='/icons/icons8-search.svg' alt='searchIcon' />
-                  </Col>
-                </Row>
-              </span>
-
               <span className="navlinks">
                 <Nav.Link as={Link} to="/about">About</Nav.Link>
                 {

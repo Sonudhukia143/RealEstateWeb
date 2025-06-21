@@ -45,7 +45,7 @@ export default function Box({ listing }) {
         try {
             setLoading(true);
 
-            const res = await fetchData(`https://bank-website-23d3.vercel.app/api/delete-listing/${id}`, null, "DELETELISTING", token);
+            const res = await fetchData(`/api/delete-listing/${id}`, null, "DELETELISTING", token);
             const data = await res.json();
 
             if (res.status === 200 || res.ok) {
