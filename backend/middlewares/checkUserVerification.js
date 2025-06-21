@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { User } from "../models/User.js";
 
-const authMiddleware = async (req, res, next) => {
+const mailAuthMiddleware = async (req, res, next) => {
     const token = req.header("Authorization");
     if  (!token) return res.status(401).json({ message: "No token, authorization denied" });
 
@@ -10,7 +10,8 @@ const authMiddleware = async (req, res, next) => {
         if(!decoded) return res.status(401).json({ message: "Token is not valid" });
 
         const user = await User.findById(decoded.id); // Exclude the password field
-        if(!user) res.status(401).json({ message:"User Not Found"})
+        if(!user) res.status(401).json({ message:"User Not Found"});
+        if(!user.emailVerified) res.status(401).json({message:"You are not verified user."});
 
         req.user = user;
         req.token = token;
@@ -20,4 +21,4 @@ const authMiddleware = async (req, res, next) => {
     }
 };
 
-export default authMiddleware;
+export default mailAuthMiddleware;

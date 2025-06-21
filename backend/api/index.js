@@ -28,6 +28,7 @@ import viewListingAdmin from '../routes/viewListingAdmin.js';
 import deleteListing from '../routes/deleteListing.js';
 import viewAllListings from '../routes/viewAllListings.js';
 import initialFetch from '../routes/initialFetch.js';
+import mailAuthMiddleware from '../middlewares/checkUserVerification.js';
 
 const connectDb = async () => {
     if (mongoose.connection.readyState >= 1) {
@@ -65,18 +66,18 @@ app.use('/api/logout', logout);
 app.use('/api/signin' ,signUpRouter);
 app.use('/api/verify-email', verifyMail);
 app.use('/api/initial-fetch', initialFetch);
-
-app.use('/api/fetch-info', authMiddleware ,fetchInfo);
 app.use('/api/request-verification', authMiddleware ,requestVerification);
-app.use('/api/change-pass',authMiddleware,changePassword);
-app.use('/api/update-profile',authMiddleware,updateProfile);
-app.use('/api/add-info',authMiddleware,addInfo);
-app.use('/api/uploadImg',authMiddleware,uploadImg);
-app.use('/api/add-listing', authMiddleware, addListing);
-app.use('/api/get-listing', authMiddleware, viewOneListing);
-app.use('/api/admin/listings',authMiddleware,viewListingAdmin);
-app.use('/api/delete-listing',authMiddleware,deleteListing);
-app.use('/api/listings',authMiddleware,viewAllListings);
+
+app.use('/api/fetch-info', authMiddleware,mailAuthMiddleware ,fetchInfo);
+app.use('/api/change-pass',authMiddleware,mailAuthMiddleware,changePassword);
+app.use('/api/update-profile',authMiddleware,mailAuthMiddleware,updateProfile);
+app.use('/api/add-info',authMiddleware,mailAuthMiddleware,addInfo);
+app.use('/api/uploadImg',authMiddleware,mailAuthMiddleware,uploadImg);
+app.use('/api/add-listing', authMiddleware,mailAuthMiddleware, addListing);
+app.use('/api/get-listing', authMiddleware,mailAuthMiddleware, viewOneListing);
+app.use('/api/admin/listings',authMiddleware,mailAuthMiddleware,viewListingAdmin);
+app.use('/api/delete-listing',authMiddleware,mailAuthMiddleware,deleteListing);
+app.use('/api/listings',authMiddleware,mailAuthMiddleware,viewAllListings);
 
 app.use('/api/send-otp',sendOtp);
 app.use('/api/verify-otp',verifyOtp);
