@@ -196,7 +196,7 @@ export default function About() {
                         size="lg"
                         className="glow-button mt-4 px-5 py-2 fw-bold"
                         onClick={() =>
-                            window.open("mailto:jagdishdhukia770@example.com?subject=Interested in Joining&body=Hi team,", "_blank")
+                            window.open("mailto:jagdishdhukia770@gmail.com?subject=Interested in Joining&body=Hi team,", "_blank")
                         }
                     >
                         Connect With Us

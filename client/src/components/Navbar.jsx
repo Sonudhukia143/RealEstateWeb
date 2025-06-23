@@ -10,7 +10,7 @@ export default function NavBar() {
   const dispatch = useDispatch();
   const signOut = async () => {
     dispatch(signInStart());
-    try{
+    try {
       const res = await fetch("https://bank-website-23d3.vercel.app/api/logout", {
         method: 'POST',
         credentials: "include",
@@ -23,7 +23,7 @@ export default function NavBar() {
       else if (!res.ok) {
         dispatch(setFlashMessage({ message: "Unable to logout", type: "warning" }))
       }
-    }catch(err){
+    } catch (err) {
       dispatch(signInError("Unexpected Error Occured"));
       dispatch(setFlashMessage({ message: "Unexpected error occurred. Please try again.", type: "danger" }));
     }
@@ -48,13 +48,14 @@ export default function NavBar() {
                       <Nav.Link as={Link} to="/profile"><img className="profilePic"
                         src={
                           userState?.currentUser?.user?.profile
-                          ?
-                          userState?.currentUser?.user?.profile
-                          :
-                          'assets/profile.webp'}
+                            ?
+                            userState?.currentUser?.user?.profile
+                            :
+                            'assets/profile.webp'}
                         alt="ProfileImg" >
                       </img>
                       </Nav.Link>
+                      <Nav.Link as={Link} to="/listings">Listings</Nav.Link>
                     </>
                     :
                     <>
@@ -67,7 +68,7 @@ export default function NavBar() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-    
+
     </>
   )
 }
