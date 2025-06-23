@@ -45,6 +45,7 @@ export default function NavBar() {
                     ?
                     <>
                       <Nav.Link as={Link} onClick={signOut}>Logout</Nav.Link>
+                      <Nav.Link as={Link} to="/listings">Listings</Nav.Link>
                       <Nav.Link as={Link} to="/profile"><img className="profilePic"
                         src={
                           userState?.currentUser?.user?.profile
@@ -55,7 +56,6 @@ export default function NavBar() {
                         alt="ProfileImg" >
                       </img>
                       </Nav.Link>
-                      <Nav.Link as={Link} to="/listings">Listings</Nav.Link>
                     </>
                     :
                     <>
