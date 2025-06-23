@@ -96,22 +96,28 @@ export default function AllListings() {
   const handleSearchChange = async (e) => {
     const value = e.target.value;
     setQuery(value);
+    let data;
+    let additionalFilteredDataFurnished;
+    let additionalFilteredDataParking;
+    let additionalFilteredDataType;
 
     if (value === "") {
-      setListings(listingsData);
+      data = listingsData;
+      console.log(data);
+      console.log(additionalFilter);
     } else if (queryType === "name") {
-      setListings(listingsData.filter((listing) => listing.name.toLowerCase().includes(value.toLowerCase())));
+      data = listingsData.filter((listing) => listing.name.toLowerCase().includes(value.toLowerCase()))
     } else if (queryType === "discount") {
-      setListings(listingsData.filter((listing) => Number(listing.discountPrice) >= Number(value)));
+      data = listingsData.filter((listing) => Number(listing.discountPrice) >= Number(value));
     } else if (queryType === "price") {
-      setListings(listingsData.filter((listing) => Number(listing.regularPrice) >= Number(value)));
+      data = listingsData.filter((listing) => Number(listing.regularPrice) >= Number(value));
     } else if (queryType === "date") {
       const daysInMs = value * 24 * 60 * 60 * 1000;
       const filtered = listingsData.filter((listing) => {
         const createdTime = new Date(listing.createdAt).getTime();
         return !isNaN(createdTime) && Date.now() - createdTime <= daysInMs;
       });
-      setListings(filtered);
+      data = filtered;
     } else if (queryType === "distance") {
       const results = await Promise.all(
         listingsData.map(async (listing) => {
@@ -130,28 +136,39 @@ export default function AllListings() {
           }
         })
       );
-
-      setListings(results.filter(({ distance }) => distance <= value).map(({ listing }) => listing));
+      data = results.filter(({ distance }) => distance <= value).map(({ listing }) => listing);
+    } 
+    if (additionalFilter?.furnished) {
+      additionalFilteredDataFurnished = data.filter((listing) => listing.furnished === true);
+    } else if(!additionalFilter?.furnished) {
+      additionalFilteredDataFurnished = data;
+    }  
+    if (additionalFilter?.parking) {
+      additionalFilteredDataParking = additionalFilteredDataFurnished.filter((listing) => listing.parking === true);
+    } else if (!additionalFilter?.parking) {
+      additionalFilteredDataParking = additionalFilteredDataFurnished;
+    }  
+    if (additionalFilter.type) {
+      additionalFilteredDataType = additionalFilteredDataParking.filter((listing) => listing.type === additionalFilter.type);
     }
+    setListings(additionalFilteredDataType);
   };
 
   useEffect(() => {
-    if(listingsData){
-            let filtered = listingsData;
-
-    if (additionalFilter.furnished) {
-      filtered = filtered.filter((listing) => listing.furnished === true);
+    if (listingsData) {
+      let filtered = listingsData;
+      if (additionalFilter.furnished) {
+        filtered = filtered.filter((listing) => listing.furnished === true);
+      }
+      if (additionalFilter.parking) {
+        filtered = filtered.filter((listing) => listing.parking === true);
+      }
+      if (additionalFilter.type) {
+        filtered = filtered.filter((listing) => listing.type === additionalFilter.type);
+      }
+      setListings(filtered);
     }
-    if (additionalFilter.parking) {
-      filtered = filtered.filter((listing) => listing.parking === true);
-    }
-    if (additionalFilter.type) {
-      filtered = filtered.filter((listing) => listing.type === additionalFilter.type);
-    }
-
-    setListings(filtered);
-    }
-  }, [additionalFilter, listingsData,query]);
+  }, [additionalFilter, listingsData]);
 
   const changeQueryType = (e) => {
     setQueryType(e.target.value);
@@ -242,11 +259,12 @@ export default function AllListings() {
       <Container className="mt-5">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h2 className="fw-semibold text-secondary">
-            {listings?.length > 0 ? "All Listings" : "No Listings"} <Badge bg="primary">{listings?.length || 0}</Badge>
+            {listings?.length > 0 ? "All Listings" : listings?.length === 0 || listings === undefined && "No Listings"} <Badge bg="primary">{listings?.length || 0}</Badge>
           </h2>
         </div>
 
-        {listings == null ? (
+        {listings === null 
+        ? (
           <div className="text-center">
             <h2 className="fw-semibold text-secondary">Organizing Your Data</h2>
             <Spinner animation="border" />
