@@ -62,125 +62,129 @@ export default function Box({ listing }) {
     if (!listing) return null;
 
     return (
-            <Card>
-                {/* Image on top */}
-                <Card.Img
-                    variant="top"
-                    src={imageUrls?.[0] || "/assets/houseimage.webp"}
-                    alt={name}
-                    style={{ height: "250px", objectFit: "cover" }}
-                    className="img"
-                />
+        <Card>
+            {/* Image on top */}
+            <Card.Img
+                variant="top"
+                src={imageUrls?.[0] || "/assets/houseimage.webp"}
+                alt={name}
+                style={{ height: "250px", objectFit: "cover" }}
+                className="img"
+            />
 
-                {/* Content stacked below */}
-                <Card.Body>
-                    <Card.Title>
-                        <BsFillHouseFill className="me-2 text-primary" />
-                        {name}
-                    </Card.Title>
+            {/* Content stacked below */}
+            <Card.Body>
+                <Card.Title>
+                    <BsFillHouseFill className="me-2 text-primary" />
+                    {name}
+                </Card.Title>
 
-                    <Card.Subtitle className="mb-2 text-muted">
-                        <BsFillGeoAltFill className="me-2" />
-                        {address?.pincode}, {address?.city}, {address?.state}, {address?.country}
-                    </Card.Subtitle>
+                <Card.Subtitle className="mb-2 text-muted">
+                    <BsFillGeoAltFill className="me-2" />
+                    {address?.pincode}, {address?.city}, {address?.state}, {address?.country}
+                </Card.Subtitle>
 
-                    <Card.Text>{description}</Card.Text>
+                <Card.Text>{description}</Card.Text>
 
-                    <div className="mb-3">
-                        {discountedPrice > 0 ? (
-                            <>
-                                <h6 className="text-muted" style={{ textDecoration: "line-through" }}>
-                                    ₹{regularPrice}
-                                </h6>
-                                <h5 className="text-success fw-bold">
-                                    ₹{regularPrice - discountPrice}
-                                </h5>
-                            </>
+                <div className="mb-3">
+                    {discountedPrice > 0 ? (
+                        <>
+                            <h6 className="text-muted" style={{ textDecoration: "line-through" }}>
+                                ₹{regularPrice}
+                            </h6>
+                            <h5 className="text-success fw-bold">
+                                ₹{regularPrice - discountPrice}
+                            </h5>
+                        </>
+                    ) : (
+                        <h5 className="fw-bold">₹{regularPrice}</h5>
+                    )}
+                </div>
+
+                <div className="mb-3 text-muted">
+                    <BsClock className="me-1" />
+                    <small>{new Date(createdAt).toLocaleDateString()}</small>
+                </div>
+
+                <Row className="mb-3 text-center">
+                    <Col>
+                        <FaBed className="me-1" />
+                        {bedrooms} Bed
+                    </Col>
+                    <Col>
+                        <FaBath className="me-1" />
+                        {bathrooms} Bath
+                    </Col>
+                </Row>
+
+                <Row className="mb-3 text-center">
+                    <Col>
+                        {furnished ? (
+                            <Badge bg="success">
+                                <BsFillCheckCircleFill className="me-1" />
+                                Furnished
+                            </Badge>
                         ) : (
-                            <h5 className="fw-bold">₹{regularPrice}</h5>
+                            <Badge bg="secondary">
+                                <BsXCircleFill className="me-1" />
+                                Not Furnished
+                            </Badge>
                         )}
-                    </div>
+                    </Col>
+                    <Col>
+                        {parking ? (
+                            <Badge bg="info">
+                                <BsFillCheckCircleFill className="me-1" />
+                                Parking
+                            </Badge>
+                        ) : (
+                            <Badge bg="warning" text="dark">
+                                <BsXCircleFill className="me-1" />
+                                No Parking
+                            </Badge>
+                        )}
+                    </Col>
+                </Row>
 
-                    <div className="mb-3 text-muted">
-                        <BsClock className="me-1" />
-                        <small>{new Date(createdAt).toLocaleDateString()}</small>
-                    </div>
+                <Row>
+                    <Col>
+                        <BsFillPersonFill className="me-1" />
+                        <p>
+                            {ownerName}
+                        </p>
+                    </Col>
+                    <Col>
+                        <BsFillEnvelopeFill className="me-1" />
+                        <p>
+                            {ownerGmail}
+                        </p>
+                    </Col>
+                </Row>
 
-                    <Row className="mb-3 text-center">
-                        <Col>
-                            <FaBed className="me-1" />
-                            {bedrooms} Bed
-                        </Col>
-                        <Col>
-                            <FaBath className="me-1" />
-                            {bathrooms} Bath
-                        </Col>
-                    </Row>
-
-                    <Row className="mb-3 text-center">
-                        <Col>
-                            {furnished ? (
-                                <Badge bg="success">
-                                    <BsFillCheckCircleFill className="me-1" />
-                                    Furnished
-                                </Badge>
-                            ) : (
-                                <Badge bg="secondary">
-                                    <BsXCircleFill className="me-1" />
-                                    Not Furnished
-                                </Badge>
-                            )}
-                        </Col>
-                        <Col>
-                            {parking ? (
-                                <Badge bg="info">
-                                    <BsFillCheckCircleFill className="me-1" />
-                                    Parking
-                                </Badge>
-                            ) : (
-                                <Badge bg="warning" text="dark">
-                                    <BsXCircleFill className="me-1" />
-                                    No Parking
-                                </Badge>
-                            )}
-                        </Col>
-                    </Row>
-
-                    <Row>
-                        <Col>
-                            <BsFillPersonFill className="me-1" />
-                            <p>
-                                {ownerName}
-                            </p>
-                        </Col>
-                        <Col>
-                            <BsFillEnvelopeFill className="me-1" />
-                            <p>
-                                {ownerGmail}
-                            </p>
-                        </Col>
-                    </Row>
-
-                    <div className="d-flex flex-column align-items-end">
+                <div className="d-flex flex-column align-items-end">
+                    {
+                    token
+                        &&
                         <Link to={`/listing/${_id}`}>
                             <Button size="sm" variant="primary">
                                 View
                             </Button>
                         </Link>
-                        {
-                            userGmail === ownerGmail
-                            &&
-                            <Button
-                                variant="danger"
-                                size="sm"
-                                className={loading ? "mt-2 disabled" : "mt-2"}
-                                onClick={() => onDelete(_id)}
-                            >
-                                {loading ? "Deleting..." : "Delete"}
-                            </Button>
-                        }
-                    </div>
-                </Card.Body>
-            </Card>
+                    }
+                    {
+                        userGmail === ownerGmail
+                        &&
+                        <Button
+                            variant="danger"
+                            size="sm"
+                            className={loading ? "mt-2 disabled" : "mt-2"}
+                            onClick={() => onDelete(_id)}
+                        >
+                            {loading ? "Deleting..." : "Delete"}
+                        </Button>
+                    }
+                </div>
+            </Card.Body>
+        </Card>
     );
 }
