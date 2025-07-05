@@ -15,7 +15,13 @@ export default function ProfileInfo({ props }) {
       <Card className="shadow-lg border-0 rounded animate__animated animate__fadeInUp bg-white w-100">
         <Card.Body>
           <Image
-            src={state?.profile ? state.profile : "/assets/profile.webp"}
+            src={
+              state?.profile
+                ? (typeof state.profile !== 'object'
+                  ? state.profile
+                  : state.profile[0]?.url)
+                : "/assets/profile.webp"
+            }
             roundedCircle
             alt="Profile"
             className="mb-3"

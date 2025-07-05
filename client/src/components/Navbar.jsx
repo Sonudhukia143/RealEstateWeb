@@ -8,6 +8,7 @@ import Loader from '../helperComponents/Loader.jsx';
 export default function NavBar() {
   const userState = useSelector(state => state.user);
   const dispatch = useDispatch();
+
   const signOut = async () => {
     dispatch(signInStart());
     try {
@@ -49,25 +50,26 @@ export default function NavBar() {
                       <Nav.Link as={Link} to="/profile"><img className="profilePic"
                         src={
                           userState?.currentUser?.user?.profile
-                            ?
-                            userState?.currentUser?.user?.profile
-                            :
-                            'assets/profile.webp'}
+                            ? (typeof userState.currentUser.user.profile !== 'object'
+                              ? userState.currentUser.user.profile
+                              : userState.currentUser.user.profile[0]?.url)
+                            : "/assets/profile.webp"
+                        }
                         alt="ProfileImg" >
                       </img>
-                      </Nav.Link>
-                    </>
-                    :
-                    <>
-                      <Nav.Link as={Link} to="/signup">Sign Up</Nav.Link>
-                      <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                    </>
+                    </Nav.Link>
+              </>
+              :
+              <>
+                <Nav.Link as={Link} to="/signup">Sign Up</Nav.Link>
+                <Nav.Link as={Link} to="/login">Login</Nav.Link>
+              </>
                 }
-              </span>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+            </span>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar >
 
     </>
   )
