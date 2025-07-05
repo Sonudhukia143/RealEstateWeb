@@ -15,7 +15,7 @@ export default async function changePassword (req,res) {
         user.password = hashedPassword;
         await user.save();
 
-        return res.status(200).json({ message: 'Password changed successfully.' });
+        return res.status(200).json({ message: 'Password changed successfully.',user:user , token:req.token});
     }catch(err){
         return res.status(400).json({ message: 'Invalid or expired token.' });
     }

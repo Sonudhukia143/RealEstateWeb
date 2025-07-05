@@ -7,73 +7,160 @@ import fetchData from "../utils/fetchData.js";
 import { Link, useNavigate } from "react-router-dom";
 import { setFlashMessage } from "../redux/flash/flashMessage.js";
 
-export default function UpdateProfile () {
-    const userState = useSelector(state => state.user);
-    const [formData, setFormData] = useState({username: userState?.currentUser?.user?.username, img: userState?.currentUser?.user?.profile, previewUrl: userState?.currentUser?.user?.profile});
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Image,
+  Card,
+} from "react-bootstrap";
+import {
+  FaUserEdit,
+  FaArrowRight,
+  FaImage,
+} from "react-icons/fa";
+import "animate.css";
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+export default function UpdateProfile() {
+  const userState = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        formData?.password !== formData?.confirmPassword && dispatch(signInError("Passwords do not match"));
-        dispatch(signInStart());
+  const [formData, setFormData] = useState({
+    username: userState?.currentUser?.user?.username || "",
+    img: userState?.currentUser?.user?.profile || "/assets/profile.webp",
+    previewUrl: userState?.currentUser?.user?.profile || "/assets/profile.webp",
+  });
 
-        try {
-            const res = await fetchData("https://bank-website-23d3.vercel.app/api/update-profile", formData, "UPDATE",userState.currentUser.token);
-            const data = await res.json();
-            if (res.status !== 200 || !res.ok) {
-                dispatch(signInError(data.message));
-                dispatch(setFlashMessage({ message: data.message, type: "error" }));
-            } else {
-                dispatch(signInSuccess(data));
-                dispatch(setFlashMessage({ message: data.message, type: "success" }));
-                navigate('/profile');
-            }
-        } catch (err) {
-            console.log(err);
-            dispatch(signInError("Unexpected Error Occured"));
-            dispatch(setFlashMessage({ message: err.message, type: "error" }));
-        }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    dispatch(signInStart());
 
-    return (
-        <>
-            {userState.loading && <Loader props={"Updating Proile"} />}
-            <div className="log-in-form-wrapper">
-                <form className="log-in-form" onSubmit={handleSubmit}>
-                    <h1>Update Profile</h1>
-                    <div>
-                        <label htmlFor="profile-image-upload" className="profile-image-container">
-                            <img
-                                id="profile-image-preview"
-                                src={!formData?.img ? userState?.currentUser?.user?.profile : formData.previewUrl}
-                                alt="Profile Image Preview"
-                                loading="lazy"
-                            />
-                            <input
-                                type="file"
-                                id="profile-image-upload"
-                                accept="image/*"
-                                name="img"
-                                onChange={(e) => signUpHandleChange(e, "img", setFormData, formData)}
-                            />
-                        </label>
+    try {
+      const res = await fetchData(
+        "https://bank-website-23d3.vercel.app/api/update-profile",
+        formData,
+        "UPDATE",
+        userState.currentUser.token
+      );
+      const data = await res.json();
 
-                        <span className="row mb-3">
-                            <label htmlFor="username" className="col-sm-12 col-form-label">
-                                New Username
-                            </label>
-                            <span className="col-sm-12">
-                                <input type="text" value={formData.username} className="form-control" id="username" required onChange={(e) => signUpHandleChange(e, "username", setFormData, formData)} />
-                            </span>
-                        </span>
+      if (res.status !== 200 || !res.ok) {
+        dispatch(signInError(data.message));
+        dispatch(setFlashMessage({ message: data.message, type: "error" }));
+      } else {
+        dispatch(signInSuccess(data));
+        dispatch(setFlashMessage({ message: data.message, type: "success" }));
+        navigate("/profile");
+      }
+    } catch (err) {
+      console.error(err);
+      dispatch(signInError("Unexpected Error Occurred"));
+      dispatch(setFlashMessage({ message: err.message, type: "error" }));
+    }
+  };
+
+  return (
+    <>
+      {userState.loading && <Loader props={"Updating Profile"} />}
+      <Container
+        fluid
+        className="bg-light text-dark d-flex justify-content-center align-items-center"
+        style={{ minHeight: "100vh", paddingTop: "6vh", paddingBottom: "6vh" }}
+      >
+        <Row className="w-100 justify-content-center">
+          <Col md={6} lg={5} xl={4}>
+            <Card className="p-4 shadow-lg border-0 rounded animate__animated animate__fadeInUp bg-white text-dark">
+              <Card.Body>
+                <div className="text-center mb-4">
+                  <FaUserEdit
+                    alt="update-logo"
+                    fluid
+                    style={{ maxHeight: "80px" }}
+                  />
+                  <h2 className="mt-3 fw-bold">Update Profile</h2>
+                  <p className="text-muted">Modify your info below</p>
+                </div>
+
+                <Form onSubmit={handleSubmit}>
+                  {/* Profile Picture Upload */}
+                  <Form.Group className="mb-3 text-center">
+                    <Form.Label htmlFor="profile-image-upload" className="d-block mb-2">
+                      <FaImage className="me-2" />
+                      Profile Image
+                    </Form.Label>
+                    <label htmlFor="profile-image-upload">
+                      <Image
+                        src={formData.previewUrl}
+                        roundedCircle
+                        className="hover-shadow"
+                        style={{
+                          height: "90px",
+                          width: "90px",
+                          objectFit: "cover",
+                          border: "2px solid #ccc",
+                          cursor: "pointer",
+                        }}
+                      />
+                    </label>
+                    <Form.Control
+                      type="file"
+                      id="profile-image-upload"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      onChange={(e) =>
+                        signUpHandleChange(e, "img", setFormData, formData)
+                      }
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3" controlId="username">
+                    <Form.Label>
+                      <FaUserEdit className="me-2" />
+                      New Username
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={formData.username}
+                      required
+                      placeholder="Enter new username"
+                      onChange={(e) =>
+                        signUpHandleChange(e, "username", setFormData, formData)
+                      }
+                    />
+                  </Form.Group>
+
+                  {userState.error && (
+                    <div className="text-danger text-center mb-3 fw-semibold">
+                      {userState.error}
                     </div>
-                    {userState.error && <div style={{ color: "red" }}>{userState.error}</div>}
-                    <button type="submit" className="btn btn-primary" onClick={(e) => handleSubmit(e)}>Save Changes</button>
-                    <button type="button" className="btn btn-danger mt-4"><Link to="/profile" className="text-white text-decoration-none">Cancel</Link></button>
-                </form>
-            </div>
-        </>
-    );
+                  )}
+
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    className="w-100 d-flex justify-content-center align-items-center"
+                  >
+                    Save Changes <FaArrowRight className="ms-2" />
+                  </Button>
+
+                  <Link to="/profile">
+                    <Button
+                      type="button"
+                      variant="outline-danger"
+                      className="w-100 mt-3"
+                    >
+                      Cancel
+                    </Button>
+                  </Link>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </>
+  );
 }

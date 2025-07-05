@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../../styles/forms.css"
+import "../../styles/forms.css";
 import { useDispatch } from "react-redux";
 import { setFlashMessage } from "../redux/flash/flashMessage";
 import { signInSuccess } from "../redux/user/userSlice";
@@ -14,9 +14,8 @@ export default function ForgotPassword() {
     const navigate = useNavigate();
 
     const gmailVerification = (e) => {
-        if (otp) return;
-        else setEmail(e.target.value);
-    }
+        if (!otp) setEmail(e.target.value);
+    };
 
     const sendOtp = async () => {
         setLoading(true);
@@ -30,85 +29,108 @@ export default function ForgotPassword() {
             if (res.ok) {
                 dispatch(setFlashMessage({ message: data.message, type: "success" }));
                 sentOtp(true);
-            } else if (!res.ok) {
+            } else {
                 dispatch(setFlashMessage({ message: data.message, type: "error" }));
             }
         } catch (err) {
-            dispatch(setFlashMessage({ message: err.message, type: "error" }))
-        }finally{
+            dispatch(setFlashMessage({ message: err.message, type: "error" }));
+        } finally {
             setLoading(false);
         }
-    }
+    };
 
     const submitOtp = async () => {
+        if (otpVal.includes("") || otpVal.includes("")) {
+            dispatch(setFlashMessage({ message: data.message, type: "success" }));
+            setLoading(false);
+            return;
+        }
         setLoading(true);
         try {
             const res = await fetch('https://bank-website-23d3.vercel.app/api/verify-otp', {
                 method: 'POST',
                 credentials: 'include',
-                body: JSON.stringify({ gmail: email, otpVal: otpVal })
+                body: JSON.stringify({ gmail: email, otpVal }),
             });
             const data = await res.json();
             if (res.ok) {
                 dispatch(setFlashMessage({ message: data.message, type: "success" }));
                 dispatch(signInSuccess(data));
                 navigate('/');
-            } else if (!res.ok) {
+            } else {
                 dispatch(setFlashMessage({ message: data.message, type: "error" }));
             }
         } catch (err) {
             dispatch(setFlashMessage({ message: err.message, type: "error" }));
-        }finally{
+        } finally {
             setLoading(false);
         }
     };
 
     const handleOtpChange = (index, value) => {
         if (!/^\d?$/.test(value)) return;
-
         const updatedOtp = [...otpVal];
         updatedOtp[index] = value;
         setOtpVal(updatedOtp);
     };
 
-
     return (
-        <div className="log-in-form-wrapper mt-4 passresetform">
-            <div className="log-in-form passresetform">
-                <h1>Login Using OTP</h1>
-                <span className="row mb-3">
-                    <label htmlFor="email" className="col-sm-12 col-form-label">Email</label>
-                    <span className="col-sm-12">
-                        <input type="email" className={otp ? "disabled form-control" : "form-control"} id="email" disabled={otp || loading} required onChange={(e) => gmailVerification(e)} />
-                    </span>
-                </span>
-                {
-                    !otp && <button type="button" onClick={sendOtp} className={loading ? "btn btn-primary disabled" : "btn btn-primary"}>{loading?"Sending OTP":"GET OTP"}</button>
-                }
-                {
-                    otp
-                        ?
-                        <>
-                            <div className="container mt-4 passresetform">
-                                <h5>Enter OTP</h5>
-                                <div className="d-flex justify-content-center gap-2 gap-md-2 gap-lg-4">
-                                    {otpVal.map((digit, idx) => (
-                                        <input
-                                            key={idx}
-                                            type="text"
-                                            className="form-control text-center otp-input"
-                                            maxLength="1"
-                                            value={digit}
-                                            onChange={(e) => handleOtpChange(idx, e.target.value)}
-                                        />
-                                    ))}
-                                </div>
+        <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light text-dark">
+            <div className="p-4 rounded shadow bg-white" style={{ maxWidth: "450px", width: "100%" }}>
+                <h2 className="text-center mb-4">Login Using OTP</h2>
+
+                <div className="mb-3">
+                    <label htmlFor="email" className="form-label">Email Address</label>
+                    <input
+                        type="email"
+                        className={`form-control ${otp ? "disabled" : ""}`}
+                        id="email"
+                        disabled={otp || loading}
+                        required
+                        onChange={gmailVerification}
+                        placeholder="Enter your email"
+                    />
+                </div>
+
+                {!otp && (
+                    <button
+                        type="button"
+                        onClick={sendOtp}
+                        className={`btn btn-primary w-100 ${loading ? "disabled" : ""}`}
+                    >
+                        {loading ? "Sending OTP..." : "Get OTP"}
+                    </button>
+                )}
+
+                {otp && (
+                    <>
+                        <div className="text-center mt-4">
+                            <h5>Enter OTP</h5>
+                            <div className="d-flex justify-content-center gap-3 mt-3">
+                                {otpVal.map((digit, idx) => (
+                                    <input
+                                        key={idx}
+                                        type="text"
+                                        className="form-control text-center"
+                                        maxLength="1"
+                                        value={digit}
+                                        onChange={(e) => handleOtpChange(idx, e.target.value)}
+                                        style={{ width: "50px", fontSize: "1.25rem" }}
+                                    />
+                                ))}
                             </div>
-                            <button type="button" onClick={submitOtp} className={loading?"btn btn-primary mt-2 disabled":"btn btn-primary mt-2"}>{loading?"Logging In":"Login"}</button></>
-                        :
-                        ""
-                }
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={submitOtp}
+                            className={`btn btn-success w-100 mt-4 ${loading ? "disabled" : ""}`}
+                        >
+                            {loading ? "Logging In..." : "Login"}
+                        </button>
+                    </>
+                )}
             </div>
         </div>
-    )
+    );
 }
