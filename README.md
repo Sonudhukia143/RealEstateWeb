@@ -20,8 +20,10 @@ started 8/1/24 using mern
 #📱 Mobile Screen View 
 
 | Home Page | Profile Page | Listing Details |
-|-----------|--------------|----------------|------|
-| ![Home](./screenshots/mobilehomepage.png) | ![Profile](./screenshots/mobileprofilepage.png) | ![Details](./screenshots/mobiledetailspage.png) |
+|-----------|--------------|------|
+| ![Home](./screenshots/mobilehomepage.png) 
+| ![Profile](./screenshots/mobileprofilepage.png) 
+| ![Details](./screenshots/mobiledetailspage.png) |
 
 > All screenshots are located in the `./screenshots/` directory.
 
