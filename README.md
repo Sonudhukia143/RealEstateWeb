@@ -10,9 +10,18 @@ started 8/1/24 using mern
 
 ## 📸 Screenshots
 
-| Home Page | Product Grid | Product Detail | Cart |
+## 💻 PC screen view
+
+| Home Page | Profile Page | Listing Details |
 |-----------|--------------|----------------|------|
-| ![Home](./screenshots/home.png) | ![Grid](./screenshots/product-grid.png) | ![Detail](./screenshots/product-detail.png) | ![Cart](./screenshots/cart.png) |
+| ![Home](./screenshots/pchomepage.png) | ![Profile](./screenshots/pcprofilepage.png) | ![Details](./screenshots/pcdetailspage.png) |
+
+
+#📱 Mobile Screen View 
+
+| Home Page | Profile Page | Listing Details |
+|-----------|--------------|----------------|------|
+| ![Home](./screenshots/mobilehomepage.png) | ![Profile](./screenshots/mobileprofilepage.png) | ![Details](./screenshots/mobiledetailspage.png) |
 
 > All screenshots are located in the `./screenshots/` directory.
 
