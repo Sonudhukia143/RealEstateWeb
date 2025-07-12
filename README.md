@@ -12,9 +12,17 @@ started 8/1/24 using mern
 
 ## 💻 PC screen view
 
-| Home Page | Profile Page | Listing Details |
-|-----------|--------------|----------------|------|
-| ![Home](./screenshots/pchomepage.png) | ![Profile](./screenshots/pcprofilepage.png) | ![Details](./screenshots/pcdetailspage.png) |
+| Home Page | 
+|-----------|
+| ![Home](./screenshots/pchomepage.png) |
+
+| Profile Page | 
+|-----------|
+| ![Profile](./screenshots/pcprofilepage.png) |
+
+| Listing Details |
+|-----------|
+| ![Details](./screenshots/pcdetailspage.png) |
 
 
 #📱 Mobile Screen View 
