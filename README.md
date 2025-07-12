@@ -4,7 +4,7 @@ started 8/1/24 using mern
 
 # 🛍️ Maîsen Monde
 
-**Maîsen Monde** is an elegant, user-friendly e-commerce web application that brings premium shopping experiences online. Built with modern frontend technologies and clean UI/UX, it allows users to browse curated products, view detailed pages, and manage their cart with ease.
+**Maîsen Monde** is an elegant, user-friendly e-commerce web application that brings premium Realestate dealing experiences online. Built with modern frontend technologies and clean UI/UX, it allows users to browse curated listings, view detailed pages, and filter their listings with ease.
 
 ---
 
@@ -30,7 +30,7 @@ started 8/1/24 using mern
 ## 🚀 Features
 
 - 🖼️ Clean and modern product display  
-- 🛒 Shopping cart functionality  
+- 🛒 Filtering functionality  
 - 🔍 Property detail view with rich information  
 - 💡 Responsive design (mobile-first)  
 - ⚡ Fast loading with optimized assets  
@@ -83,6 +83,7 @@ cd maisen-monde
 2. **Install dependencies**
 
 ```bash
+cd backend
 npm install
 ```
 
@@ -95,6 +96,7 @@ vercel dev
 3. **Run the development server for client**
 
 ```bash
+cd client
 npm run dev
 ```
 
