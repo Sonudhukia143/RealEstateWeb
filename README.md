@@ -4,7 +4,7 @@ started 8/1/24 using mern
 
 # 🛍️ Maîsen Monde
 
-**Maîsen Monde** is an elegant, user-friendly e-commerce web application that brings premium Realestate dealing experiences online. Built with modern frontend technologies and clean UI/UX, it allows users to browse curated listings, view detailed pages, and filter their listings with ease.
+**Maîsen Monde** is an elegant, user-friendly real-estate web application that brings premium Realestate dealing experiences online. Built with modern frontend technologies and clean UI/UX, it allows users to browse curated listings, view detailed pages, and filter their listings with ease.
 
 ---
 
